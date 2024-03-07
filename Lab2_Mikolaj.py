@@ -34,7 +34,7 @@ class Solution:
                     arr[j],arr[j+1]=arr[j+1],arr[j]
                     changes+=1
         end=tm.perf_counter_ns()
-        self.bubble_time= end-start
+        return end-start
     #print(bubble_sort(tab))
     def insertion_sort(self,arr):
         start=tm.perf_counter_ns()
@@ -46,7 +46,7 @@ class Solution:
                 i-=1
             arr[i+1]=key
         end=tm.perf_counter_ns()
-        self.insert_time= end-start
+        return end-start
     def selection_sort(self,arr):
         start=tm.perf_counter_ns()
         for j in range (0,len(arr)):
@@ -58,10 +58,13 @@ class Solution:
         end=tm.perf_counter_ns()
         return end-start
     def get_times(self):
-        for i in range(0,len(self.bubble_arrays)):
-            self.bubble_time.append(self.bubble_sort(self.bubble_arrays[i]))
-            self.selection_time.append(self.selection_sort(self.selection_arrays[i]))
-            self.insert_time.append(self.insertion_sort(self.insert_arrays[i]))
+        for k in range(0,len(self.bubble_arrays)):
+            self.bubble_time.append(self.bubble_sort(self.bubble_arrays[k]))
+            self.selection_time.append(self.selection_sort(self.selection_arrays[k]))
+            self.insert_time.append(self.insertion_sort(self.insert_arrays[k]))
+        self.bubble_time=self.bubble_time[0:6]
+        self.insert_time=self.insert_time[0:6]
+        self.selection_time=self.selection_time[0:6]
     def plot_build(self):
         plt.plot(self.sizes,self.bubble_time,label="Bubble sort")
         plt.plot(self.sizes,self.insert_time,label="Insertion sort")

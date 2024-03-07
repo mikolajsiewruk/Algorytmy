@@ -51,4 +51,4 @@ def parentheses(parentheses_string):
             return False
     return stos.isEmpty()
 
-print(parentheses('()'))
+print(parentheses(''))

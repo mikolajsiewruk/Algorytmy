@@ -1,12 +1,12 @@
 from random import randint
+import time as tm
 def array_maker():
     arrays=[]
-    for i in range(0,5):
-        a=[]
-        for i in range (0,6):
-            r=randint(0,100)
-            a.append(r)
-        arrays.append(a)
+    a=[]
+    for i in range (0,6):
+        r=randint(0,100)
+        a.append(r)
+    arrays.append(a)
     return arrays
 ars=array_maker()
 def bubble_sort(arr):
@@ -40,3 +40,4 @@ def selection_sort(arr):
 #print(selection_sort(tab))
 for arr in ars:
     print(bubble_sort(arr))
+print(tm.perf_counter_ns())

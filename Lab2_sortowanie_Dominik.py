@@ -6,10 +6,7 @@ def random_array(minimum, maximum, size):
         ciag.append(rnd.randint(minimum, maximum))
     return ciag
 
-ciag = random_array(0,10,5)
-print(ciag)
 def bubble_sort(sort):
-    print(sort)
     a = 1
     while a != 0:
         a = 0
@@ -17,11 +14,10 @@ def bubble_sort(sort):
             if sort[i] > sort[i+1]:
                 sort[i], sort[i+1] = sort[i+1], sort[i]
                 a+=1
-    return sort
+    posortowane = sort
+    return posortowane
 
-print(bubble_sort(ciag))
 def insertion_sort(sort):
-    print(sort)
     for i in range(1, len(sort)):
         # check to ten element części nieposortowanej, który będziemy porównywali
         # z elementami części posortowanej
@@ -43,6 +39,21 @@ def insertion_sort(sort):
 
         # jeśli nasz sprawdzany element trafi na element mniejszy od siebie, ustawia się zaraz po nim
         sort[ind_sorted + 1] = check
+    posortowane = sort
+    return posortowane
 
-    return sort
+
+ciag = random_array(0,10,5)
+print(ciag)
+print(bubble_sort(ciag))
+print(ciag)
 print(insertion_sort(ciag))
+
+#problem polega na tym że mam zadeklarowaną listę 'ciag'
+# po wywołaniu print(bubble_sort(ciag)) zwraca mi sie posortowany ciag
+#ale jednoczesnie lista 'ciag' mi się sortuje na stałe, tak że następny print(ciag) pokazuje mi już
+# 'ciag' w wersji posortowanej a nie tak jak został stworzony na początku
+# tworzenie nowych list które są identyczne dla początkowego ciagu (nieposrtowanego) nic nie zmienia
+# one również sortują się
+# i nie wiem jak to zrobić żeby w jednym projekcie kolejne sortowanie np. insertion_sort(ciag)
+# otrzymywały nieposortowaną listę, a nie tę, która już przeszła przez bubble_sort

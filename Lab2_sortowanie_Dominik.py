@@ -1,9 +1,9 @@
 import random as rnd
 
-def random_array(min, max, size):
+def random_array(minimum, maximum, size):
     ciag = []
     for i in range(size):
-        ciag.append(rnd.randint(min, max))
+        ciag.append(rnd.randint(minimum, maximum))
     return ciag
 
 ciag = random_array(0,10,5)

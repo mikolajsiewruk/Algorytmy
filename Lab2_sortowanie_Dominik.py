@@ -1,5 +1,6 @@
 import random as rnd
 import time as tm
+import matplotlib.pyplot as plt
 
 def random_array(minimum, maximum, size):
     ciag = []
@@ -88,9 +89,20 @@ ciag1_2000 = ciag_2000.copy()
 ciag2_2000 = ciag_2000.copy()
 ciag3_2000 = ciag_2000.copy()
 
-czas50 = bubble_sort(ciag1_50)
-czas100 = bubble_sort(ciag1_100)
-czas200 = bubble_sort(ciag1_200)
-czas500 = bubble_sort(ciag1_500)
-czas1000 = bubble_sort(ciag1_1000)
-czas2000 = bubble_sort(ciag1_2000)
+sizes = [50, 100, 200, 500, 1000, 2000]
+times_bubble = [bubble_sort(ciag1_50), bubble_sort(ciag1_100), bubble_sort(ciag1_200), bubble_sort(ciag1_500),
+                bubble_sort(ciag1_1000), bubble_sort(ciag1_2000)]
+times_insertion = [insertion_sort(ciag2_50), insertion_sort(ciag2_100), insertion_sort(ciag2_200),
+                   insertion_sort(ciag2_500), insertion_sort(ciag2_1000), insertion_sort(ciag2_2000)]
+times_selection = [selection_sort(ciag3_50), selection_sort(ciag3_100), selection_sort(ciag3_200),
+                   selection_sort(ciag3_500), selection_sort(ciag3_1000), selection_sort(ciag3_2000)]
+
+plt.plot(sizes, times_bubble, label = "Bubble sort")
+plt.plot(sizes, times_insertion, label = 'Insertion sort')
+plt.plot(sizes, times_selection, label = 'Selection sort')
+plt.xlabel('Rozmiar wektora')
+plt.ylabel('Czas sortowania [ns]')
+plt.title('Porównanie sortowań i ich czasów')
+plt.legend()
+plt.grid(True)
+plt.show()

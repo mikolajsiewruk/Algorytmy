@@ -1,4 +1,5 @@
 import random as rnd
+import time as tm
 
 def random_array(minimum, maximum, size):
     ciag = []
@@ -7,6 +8,7 @@ def random_array(minimum, maximum, size):
     return ciag
 
 def bubble_sort(sort):
+    start = tm.perf_counter_ns()
     a = 1
     while a != 0:
         a = 0
@@ -14,46 +16,81 @@ def bubble_sort(sort):
             if sort[i] > sort[i+1]:
                 sort[i], sort[i+1] = sort[i+1], sort[i]
                 a+=1
-    posortowane = sort
-    return posortowane
+    stop = tm.perf_counter_ns()
+    czas = stop - start
+    return czas
 
 def insertion_sort(sort):
+    start = tm.perf_counter_ns()
     for i in range(1, len(sort)):
-        # check to ten element części nieposortowanej, który będziemy porównywali
-        # z elementami części posortowanej
         check = sort[i]
-
-        # ind_sorted to index aktualnie porównywanego elementu częsci posortowanej
-        # na początku jest to element 0
         ind_sorted = i-1
 
-        # przechodzimy przez elementy 'na lewo' od elementu sprawdzanego, tak długo jak są od niego większe
-        # i pozostają jakieś niesprawdzone elementy 'na lewo' od niego
         while ind_sorted>=0 and check < sort[ind_sorted]:
-
-            # trafiając na element większy przenosimy go o jedno miejsce 'w prawo' naszego ciągu
             sort[ind_sorted + 1] = sort[ind_sorted]
-
-            # i przesuwamy się o kolejny element w lewo części 'sprawdzonej'
             ind_sorted -= 1
 
-        # jeśli nasz sprawdzany element trafi na element mniejszy od siebie, ustawia się zaraz po nim
         sort[ind_sorted + 1] = check
-    posortowane = sort
-    return posortowane
 
+    stop = tm.perf_counter_ns()
+    czas = stop - start
+    return czas
 
-ciag = random_array(0,10,5)
-print(ciag)
-print(bubble_sort(ciag))
-print(ciag)
-print(insertion_sort(ciag))
+def selection_sort(sort):
+    start = tm.perf_counter_ns()
+    for i in range(len(sort)):
+        ind = i
+        for j in range(i + 1, len(sort)):
+            if sort[j] < sort[ind]:
+                ind = j
+        sort[i], sort[ind] = sort[ind], sort[i]
 
-#problem polega na tym że mam zadeklarowaną listę 'ciag'
-# po wywołaniu print(bubble_sort(ciag)) zwraca mi sie posortowany ciag
-#ale jednoczesnie lista 'ciag' mi się sortuje na stałe, tak że następny print(ciag) pokazuje mi już
-# 'ciag' w wersji posortowanej a nie tak jak został stworzony na początku
-# tworzenie nowych list które są identyczne dla początkowego ciagu (nieposrtowanego) nic nie zmienia
-# one również sortują się
-# i nie wiem jak to zrobić żeby w jednym projekcie kolejne sortowanie np. insertion_sort(ciag)
-# otrzymywały nieposortowaną listę, a nie tę, która już przeszła przez bubble_sort
+    stop = tm.perf_counter_ns()
+    czas = stop - start
+    return czas
+
+# Niedziałające selection sort; metoda min nie sprawdza się przy powtarzających się wartościach
+# Zostawiam dla potomnych, bo podoba mi się jak to napisałem xd
+
+# def selection_sort(sort):
+#     for i in range(len(sort)):
+#         ind = sort.index(min(sort[i:]))
+#         sort[i], sort[ind] = sort[ind], sort[i]
+#     return sort
+
+ciag_50 = random_array(0, 5000, 50)
+ciag1_50 = ciag_50.copy()
+ciag2_50 = ciag_50.copy()
+ciag3_50 = ciag_50.copy()
+
+ciag_100 = random_array(0, 5000, 100)
+ciag1_100 = ciag_100.copy()
+ciag2_100 = ciag_100.copy()
+ciag3_100 = ciag_100.copy()
+
+ciag_200 = random_array(0, 5000, 200)
+ciag1_200 = ciag_200.copy()
+ciag2_200 = ciag_200.copy()
+ciag3_200 = ciag_200.copy()
+
+ciag_500 = random_array(0, 5000, 500)
+ciag1_500 = ciag_500.copy()
+ciag2_500 = ciag_500.copy()
+ciag3_500 = ciag_500.copy()
+
+ciag_1000 = random_array(0, 5000, 1000)
+ciag1_1000 = ciag_1000.copy()
+ciag2_1000 = ciag_1000.copy()
+ciag3_1000 = ciag_1000.copy()
+
+ciag_2000 = random_array(0, 5000, 2000)
+ciag1_2000 = ciag_2000.copy()
+ciag2_2000 = ciag_2000.copy()
+ciag3_2000 = ciag_2000.copy()
+
+czas50 = bubble_sort(ciag1_50)
+czas100 = bubble_sort(ciag1_100)
+czas200 = bubble_sort(ciag1_200)
+czas500 = bubble_sort(ciag1_500)
+czas1000 = bubble_sort(ciag1_1000)
+czas2000 = bubble_sort(ciag1_2000)

@@ -3,7 +3,7 @@ import time as tm
 import matplotlib.pyplot as plt
 
 
-def generowanie_wektora():
+def generowanie_wektorow():
     bubble_arrays = []
     insert_arrays = []
     selection_arrays = []

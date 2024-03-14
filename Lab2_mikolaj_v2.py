@@ -54,10 +54,10 @@ selection_time = []
 sizes = [50, 100, 200, 500, 1000, 2000]
 
 for i in range(0, len(sizes)):
-    a = [randint(0, 5000) for _ in range(0, sizes[i])]
-    bubble_arrays.append(a.copy())
-    insert_arrays.append(a.copy())
-    selection_arrays.append(a.copy())
+    temporary = [randint(0, 5000) for _ in range(0, sizes[i])]
+    bubble_arrays.append(temporary.copy())
+    insert_arrays.append(temporary.copy())
+    selection_arrays.append(temporary.copy())
 
 bubble_time = [bubble_sort(bubble_arrays[i])[0] for i in range(0, 6)]
 insert_time = [insertion_sort(insert_arrays[i])[0] for i in range(0, 6)]

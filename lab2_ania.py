@@ -54,10 +54,16 @@ def insertion_sort(wektor3):
     czas_ins_sort=end-start
     return czas_ins_sort, wektor3
 
-wektory=generowanie_wektora(10,1000)
-w1=wektory.copy()
-w2=wektory.copy()
-w3=wektory.copy()
+# zastapilem funkcje generujaca petla for i troche inna struktura, jesli nie ma kopii pomiedzy w1,w2 i w3 to sortowanie jednego z nich nie zmieni innych
+sizes = [50, 100, 200, 500, 1000, 2000]
+w1=[]
+w2=[]
+w3=[]
+for i in range(0, len(sizes)):
+    temporary = [rnd.randint(0, 5000) for _ in range(0, sizes[i])]
+    w1.append(temporary.copy())
+    w2.append(temporary.copy())
+    w3.append(temporary.copy())
 
 czas_bubble=[]
 czas_ins=[]
@@ -76,26 +82,28 @@ N=int(input("Podaj długość wektora: "))
 min=int(input("Podaj minimalną wartość wektora: "))
 max=int(input("Podaj maksymalną wartość wektora: "))
 
-wektor=generowanie_wektora(min,max)
+wektor=generowanie_wektora(min,max) # moja funkcja generująca wektor zwraca cos takiego result=[[1,2,3],[4,5,65],[69,2137,420]], żeby się odwolac do 1 tablicy to result[0] zeby sie odwolac do 69 result[2][0]
 wektor1=wektor.copy()
 wektor2=wektor.copy()
 wektor3=wektor.copy()
-#print(wektor)
-#print(wektor1)
-for i in range (0,6):
-    czas_bubble_sort=bubble_sort(wektor1[i])[0]
 
-    print("Wektor posortowany przy użyciu sortowania bąbelkowego: ", wektor1[i])
-    print("Czas sortowania:",czas_bubble_sort, "nanosekund")
 
-    czas_sel_sort=selection_sort(wektor2[i])[0]
-    print("Wektor posortowany przy użyciu sortowania poprzez wybór: ", wektor2[i])
-    print("Czas sortowania:",czas_sel_sort, "nanosekund")
+# tutaj wszystkie wyniki są złe ponieważ sortując 1 tabele sortuja sie jej wszystkie kopie
 
-    czas_ins_sort=insertion_sort(wektor3[i])[0]
-    print("Wektor posortowany przy użyciu sortowania przez wstawianie: ", wektor3[i])
-    print("Czas sortowania:", czas_ins_sort, "nanosekund")
+czas_bubble_sort=bubble_sort(wektor1[0])[0]
 
+print("Wektor posortowany przy użyciu sortowania bąbelkowego: ", wektor1[0])
+print("Czas sortowania:",czas_bubble_sort, "nanosekund")
+
+czas_sel_sort=selection_sort(wektor2[0])[0]
+print("Wektor posortowany przy użyciu sortowania poprzez wybór: ", wektor2[0])
+print("Czas sortowania:",czas_sel_sort, "nanosekund")
+
+czas_ins_sort=insertion_sort(wektor3[0])[0]
+print("Wektor posortowany przy użyciu sortowania przez wstawianie: ", wektor3[0])
+print("Czas sortowania:", czas_ins_sort, "nanosekund")
+
+# koniec zlego kodu, wykres dziala
 def rysowanie_wykresu():
     plt.plot([50, 100, 200, 1000, 2000, 5000], czas_ins, label="Insertion sort")
     plt.plot([50,100,200,1000,2000,5000],czas_bubble, label="Bubble sort")

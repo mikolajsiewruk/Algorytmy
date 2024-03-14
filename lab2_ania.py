@@ -13,6 +13,16 @@ def generowanie_wektora():
         insert_arrays.append(temporary.copy())
         selection_arrays.append(temporary.copy())
     return bubble_arrays,insert_arrays,selection_arrays
+def generowanie_wektora(N,minimum,maksimum): # wazne zeby tu dodac argumenty tej funkcji oraz przy jej uruchamianiu tez je podac
+    bubble_arrays = []
+    insert_arrays = []
+    selection_arrays = []
+    for i in range(0, len(sizes)): # tu zmienic na N
+        temporary = [rnd.randint(0, 5000) for _ in range(0, sizes[i])] # to zmienic tak zeby temp bylo tylko jedna liczba, zakres randint(minimum,maksimum)
+        bubble_arrays.append(temporary.copy())
+        insert_arrays.append(temporary.copy())
+        selection_arrays.append(temporary.copy())
+    return bubble_arrays,insert_arrays,selection_arrays
 def bubble_sort(wektor1):
     start:int =tm.perf_counter_ns()
     l=len(wektor1) #długość wektora
@@ -60,7 +70,7 @@ def insertion_sort(wektor3):
 
 # zastapilem funkcje generujaca petla for i troche inna struktura, jesli nie ma kopii pomiedzy w1,w2 i w3 to sortowanie jednego z nich nie zmieni innych
 sizes = [50, 100, 200, 500, 1000, 2000]
-w1,w2,w3=generowanie_wektora() # BARDZO WAŻNE!!!, tak się odwołuje do rezultatów generowania wektora w tej postaci co teraz dodałem
+w1,w2,w3=generowanie_wektorow() # BARDZO WAŻNE!!!, tak się odwołuje do rezultatów generowania wektora w tej postaci co teraz dodałem
 
 czas_bubble=[]
 czas_ins=[]

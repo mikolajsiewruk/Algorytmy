@@ -3,12 +3,16 @@ import time as tm
 import matplotlib.pyplot as plt
 
 
-def generowanie_wektora(min, max):
-    sizes=[50,100,200,1000,2000,5000]
-    wektory=[]
-    for i in range(0,6):
-        wektory.append([rnd.randint(min,max) for i in range(sizes[i])])
-    return wektory
+def generowanie_wektora():
+    bubble_arrays = []
+    insert_arrays = []
+    selection_arrays = []
+    for i in range(0, len(sizes)):
+        temporary = [rnd.randint(0, 5000) for _ in range(0, sizes[i])]
+        bubble_arrays.append(temporary.copy())
+        insert_arrays.append(temporary.copy())
+        selection_arrays.append(temporary.copy())
+    return bubble_arrays,insert_arrays,selection_arrays
 def bubble_sort(wektor1):
     start:int =tm.perf_counter_ns()
     l=len(wektor1) #długość wektora
@@ -56,14 +60,7 @@ def insertion_sort(wektor3):
 
 # zastapilem funkcje generujaca petla for i troche inna struktura, jesli nie ma kopii pomiedzy w1,w2 i w3 to sortowanie jednego z nich nie zmieni innych
 sizes = [50, 100, 200, 500, 1000, 2000]
-w1=[]
-w2=[]
-w3=[]
-for i in range(0, len(sizes)):
-    temporary = [rnd.randint(0, 5000) for _ in range(0, sizes[i])]
-    w1.append(temporary.copy())
-    w2.append(temporary.copy())
-    w3.append(temporary.copy())
+w1,w2,w3=generowanie_wektora() # BARDZO WAŻNE!!!, tak się odwołuje do rezultatów generowania wektora w tej postaci co teraz dodałem
 
 czas_bubble=[]
 czas_ins=[]
@@ -82,10 +79,10 @@ N=int(input("Podaj długość wektora: "))
 min=int(input("Podaj minimalną wartość wektora: "))
 max=int(input("Podaj maksymalną wartość wektora: "))
 
-wektor=generowanie_wektora(min,max) # moja funkcja generująca wektor zwraca cos takiego result=[[1,2,3],[4,5,65],[69,2137,420]], żeby się odwolac do 1 tablicy to result[0] zeby sie odwolac do 69 result[2][0]
+'''wektor=generowanie_wektora(min,max) # moja funkcja generująca wektor zwraca cos takiego result=[[1,2,3],[4,5,65],[69,2137,420]], żeby się odwolac do 1 tablicy to result[0] zeby sie odwolac do 69 result[2][0]
 wektor1=wektor.copy()
 wektor2=wektor.copy()
-wektor3=wektor.copy()
+wektor3=wektor.copy(
 
 
 # tutaj wszystkie wyniki są złe ponieważ sortując 1 tabele sortuja sie jej wszystkie kopie
@@ -101,7 +98,7 @@ print("Czas sortowania:",czas_sel_sort, "nanosekund")
 
 czas_ins_sort=insertion_sort(wektor3[0])[0]
 print("Wektor posortowany przy użyciu sortowania przez wstawianie: ", wektor3[0])
-print("Czas sortowania:", czas_ins_sort, "nanosekund")
+print("Czas sortowania:", czas_ins_sort, "nanosekund")'''
 
 # koniec zlego kodu, wykres dziala
 def rysowanie_wykresu():

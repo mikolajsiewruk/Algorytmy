@@ -8,43 +8,43 @@ def random_array(minimum, maximum, size):
         ciag.append(rnd.randint(minimum, maximum))
     return ciag
 
-def bubble_sort(sort):
+def bubble_sort(o):
     start = tm.perf_counter_ns()
     a = 1
     while a != 0:
         a = 0
-        for i in range(len(sort)-1):
-            if sort[i] > sort[i+1]:
-                sort[i], sort[i+1] = sort[i+1], sort[i]
+        for i in range(len(o) - 1):
+            if o[i] > o[i + 1]:
+                o[i], o[i + 1] = o[i + 1], o[i]
                 a+=1
     stop = tm.perf_counter_ns()
     czas = stop - start
     return czas
 
-def insertion_sort(sort):
+def insertion_sort(o):
     start = tm.perf_counter_ns()
-    for i in range(1, len(sort)):
-        check = sort[i]
+    for i in range(1, len(o)):
+        check = o[i]
         ind_sorted = i-1
 
-        while ind_sorted>=0 and check < sort[ind_sorted]:
-            sort[ind_sorted + 1] = sort[ind_sorted]
+        while ind_sorted>=0 and check < o[ind_sorted]:
+            o[ind_sorted + 1] = o[ind_sorted]
             ind_sorted -= 1
 
-        sort[ind_sorted + 1] = check
+        o[ind_sorted + 1] = check
 
     stop = tm.perf_counter_ns()
     czas = stop - start
     return czas
 
-def selection_sort(sort):
+def selection_sort(o):
     start = tm.perf_counter_ns()
-    for i in range(len(sort)):
+    for i in range(len(o)):
         ind = i
-        for j in range(i + 1, len(sort)):
-            if sort[j] < sort[ind]:
+        for j in range(i + 1, len(o)):
+            if o[j] < o[ind]:
                 ind = j
-        sort[i], sort[ind] = sort[ind], sort[i]
+        o[i], o[ind] = o[ind], o[i]
 
     stop = tm.perf_counter_ns()
     czas = stop - start
@@ -106,3 +106,6 @@ plt.title('Porównanie sortowań i ich czasów')
 plt.legend()
 plt.grid(True)
 plt.show()
+
+# print(insertion_sort(ciag2_1000))
+# print(selection_sort(ciag3_1000))

@@ -34,7 +34,7 @@ class Results:
     def get_stats(self):
         args=[self.time50,self.time100,self.time200,self.time500,self.time1000,self.time2000]
 
-        # pętla dla każdej z tabel liczy jej statystyki i dodaje do tabeli statycstycznych
+        # pętla dla każdej z tabel liczy jej statystyki i dodaje do tabeli statystycznych
         for arr in args:
             self.mins.append(min(arr))
             self.maxs.append(max(arr))

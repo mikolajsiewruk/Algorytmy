@@ -1,8 +1,7 @@
 import random as rnd
 import time as tm
 import matplotlib.pyplot as plt
-import tabulate as tbl
-import numpy as np
+
 
 def generowanie_wektora(min, max):
     sizes=[50,100,200,1000,2000,5000]
@@ -59,23 +58,19 @@ wektory=generowanie_wektora(10,1000)
 w1=wektory.copy()
 w2=wektory.copy()
 w3=wektory.copy()
-print(w1)
-print(w2)
-print(w3)
+
 czas_bubble=[]
 czas_ins=[]
 czas_sel=[]
 
 for i in range(0,6):
-    czas_bubble.append(bubble_sort(w1[i]))
-    czas_ins.append(insertion_sort(w2[i]))
-    czas_sel.append(selection_sort(w3[i]))
+    czas_bubble.append(bubble_sort(w1[i])[0])
+    czas_ins.append(insertion_sort(w2[i])[0])
+    czas_sel.append(selection_sort(w3[i])[0])
 '''wektor_podany=generowanie_wektora(min, max)
 print(wektor_podany)'''
 
 print(czas_ins)
-print(czas_sel)
-print(czas_bubble)
 
 N=int(input("Podaj długość wektora: "))
 min=int(input("Podaj minimalną wartość wektora: "))
@@ -85,21 +80,21 @@ wektor=generowanie_wektora(min,max)
 wektor1=wektor.copy()
 wektor2=wektor.copy()
 wektor3=wektor.copy()
-print(wektor)
-print(wektor1)
+#print(wektor)
+#print(wektor1)
+for i in range (0,6):
+    czas_bubble_sort=bubble_sort(wektor1[i])[0]
 
-czas_bubble_sort=bubble_sort(wektor1)
+    print("Wektor posortowany przy użyciu sortowania bąbelkowego: ", wektor1[i])
+    print("Czas sortowania:",czas_bubble_sort, "nanosekund")
 
-print("Wektor posortowany przy użyciu sortowania bąbelkowego: ", wektor1)
-print("Czas sortowania:",czas_bubble_sort, "nanosekund")
+    czas_sel_sort=selection_sort(wektor2[i])[0]
+    print("Wektor posortowany przy użyciu sortowania poprzez wybór: ", wektor2[i])
+    print("Czas sortowania:",czas_sel_sort, "nanosekund")
 
-czas_sel_sort=selection_sort(wektor2)
-print("Wektor posortowany przy użyciu sortowania poprzez wybór: ", wektor2)
-print("Czas sortowania:",czas_sel_sort, "nanosekund")
-
-czas_ins_sort=insertion_sort(wektor3)
-print("Wektor posortowany przy użyciu sortowania przez wstawianie: ", wektor3)
-print("Czas sortowania:", czas_ins_sort, "nanosekund")
+    czas_ins_sort=insertion_sort(wektor3[i])[0]
+    print("Wektor posortowany przy użyciu sortowania przez wstawianie: ", wektor3[i])
+    print("Czas sortowania:", czas_ins_sort, "nanosekund")
 
 def rysowanie_wykresu():
     plt.plot([50, 100, 200, 1000, 2000, 5000], czas_ins, label="Insertion sort")

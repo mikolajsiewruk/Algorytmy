@@ -123,6 +123,7 @@ plt.ylabel("Sorting time")
 plt.legend()
 plt.grid(True)
 
+#w2
 plt.figure(2)
 plt.scatter(sizes,bubble.mins,label="mins",s=10)
 plt.scatter(sizes,bubble.maxs,label="maxs",s=10)

@@ -112,6 +112,7 @@ bubble=Results(bubble_time)
 insertion=Results(insert_time)
 selection=Results(selection_time)
 
+#wykresy
 plt.figure(1)
 plt.plot(sizes,bubble.means,label="Bubble sort means")
 plt.plot(sizes,insertion.means,label="Insertion sort mean")

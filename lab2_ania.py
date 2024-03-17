@@ -2,6 +2,7 @@ import random as rnd
 import time as tm
 import matplotlib.pyplot as plt
 import tabulate as tbl
+import numpy as np
 
 def generowanie_wektora(min, max):
     sizes=[50,100,200,1000,2000,5000]
@@ -23,7 +24,7 @@ def bubble_sort(wektor1):
         return
     end=tm.perf_counter_ns()
     czas_bubble_sort=end-start
-    return czas_bubble_sort
+    return czas_bubble_sort, wektor1
 
 def selection_sort(wektor2):
     start = tm.perf_counter_ns()
@@ -37,21 +38,22 @@ def selection_sort(wektor2):
 
     end=tm.perf_counter_ns()
     czas_sel_sort=end-start
-    return czas_sel_sort
+    return czas_sel_sort, wektor2
 
 def insertion_sort(wektor3):
     start=tm.perf_counter_ns()
     l=len(wektor3)
-    for j in range(1, l):
-        element=wektor3[j]
-        i=j-1 #poprzedni wyraz wektora
-        while i>=0 and element< wektor3[i]: #jeżeli i>=0 i zadeklarowany element jest mniejszy od wyrazu z posorotwanej części
-            wektor3[i+1]=wektor3[i] #to dodaje element do posortowanej części
-            i=i-1 #zmniejszamy długość wektora
-        wektor3[i+1]=element #jeżeli warunek niespełniony, to DOPYTAĆ O CHUJ CHODZI
+    for i in range(1, l):
+        sp=wektor3[i]
+        ind_posort=i-1
+        while sp<wektor3[ind_posort] and ind_posort>=0:
+            wektor3[ind_posort+1]=wektor3[ind_posort]
+            ind_posort=ind_posort-1
+        wektor3[ind_posort+1]=sp
+
     end=tm.perf_counter_ns()
     czas_ins_sort=end-start
-    return czas_ins_sort
+    return czas_ins_sort, wektor3
 
 wektory=generowanie_wektora(10,1000)
 w1=wektory.copy()
@@ -89,7 +91,7 @@ print(wektor1)
 czas_bubble_sort=bubble_sort(wektor1)
 
 print("Wektor posortowany przy użyciu sortowania bąbelkowego: ", wektor1)
-print("Czas sortowania:",czas_bubble_sort "nanosekund")
+print("Czas sortowania:",czas_bubble_sort, "nanosekund")
 
 czas_sel_sort=selection_sort(wektor2)
 print("Wektor posortowany przy użyciu sortowania poprzez wybór: ", wektor2)
@@ -110,5 +112,3 @@ def rysowanie_wykresu():
     plt.grid(True)
     plt.show()
 rysowanie_wykresu()
-#bomba ale nie wiem co zmieniłeś w tym swoim kodzie i co porpawić
-#zajebałam sie już z tymi wektorami i nie wiem co to sortuje?!

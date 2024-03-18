@@ -3,6 +3,7 @@ import time as tm
 import copy
 import matplotlib.pyplot as plt
 
+
 def bubble_sort(to_sort):
     start = tm.perf_counter_ns()
     a = 1
@@ -15,6 +16,7 @@ def bubble_sort(to_sort):
     stop = tm.perf_counter_ns()
     czas = stop - start
     return czas, to_sort
+
 
 def insertion_sort(to_sort):
     start = tm.perf_counter_ns()
@@ -31,6 +33,7 @@ def insertion_sort(to_sort):
     stop = tm.perf_counter_ns()
     czas = stop - start
     return czas, to_sort
+
 
 def selection_sort(to_sort):
     start = tm.perf_counter_ns()
@@ -90,6 +93,7 @@ def sorting(N, vector_sizes):
     b_min, b_max, b_mean = values_of_sorting(vector_sizes, b_times)
     i_min, i_max, i_mean = values_of_sorting(vector_sizes, i_times)
     s_min, s_max, s_mean = values_of_sorting(vector_sizes, s_times)
+
     plt.figure(1)
     plt.plot(vector_sizes, b_mean, label = "Bubble sort")
     plt.plot(vector_sizes, i_mean, label="Insertion sort")

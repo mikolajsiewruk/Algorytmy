@@ -1,0 +1,82 @@
+Dokumentacja kodu Lab3. Mikołaj Siewruk. Version 1.0.0 - 18.03.2024
+
+class Results:
+        Klasa służąca do przechowywania tablic danych czasów sortowania.
+
+    Metody:
+
+        __init__(self,time_arr):
+            Klasa przy inicjalizacji wymaga podania tablicy czasów z sortowania, Format tablicy musi być następujący [[1,2,3],[4,5,6],[7,8,9],[0,1,2],[3,4,5],[6,7,8]]. Tablica podawana przy incjalizacji powinna mieć 6 elementów, gdzie każdy element jest tablicą wyników czasów sortowania.
+
+        separate_arrays(self):
+            Metoda separująca tablicę podawaną przy inicjalizacji klasy na 6 osobnych tablic zawierających konkretne czasy sortowania dla danej liczby próbek. Wywoływana przy inicjalizacji klasy, nie należy się do niej ponownie odwoływać.
+
+        get_stats(self):
+            Metoda obliczająca statystyki poszczególnych sortowań. Wywoływana przy inicjalizacji klasy, nie należy się do niej ponownie odwoływać.
+
+    Argumenty:
+        self.time_arr=time_arr:
+            Tablica podawana przy inicjalizacji.
+        self.time50 = []:
+            Tablica czasów dla próbki 50 elementowej.
+        self.time100 = []:
+            Tablica czasów dla próbki 100 elementowej.
+        self.time200 = []:
+            Tablica czasów dla próbki 200 elementowej.
+        self.time500 = []:
+            Tablica czasów dla próbki 500 elementowej.
+        self.time1000 = []:
+            Tablica czasów dla próbki 100 elementowej.
+        self.time2000 = []:
+            Tablica czasów dla próbki 2000 elementowej.
+        self.mins=[]:
+            Tablica minimalnych wartości czasu sortowania dla każdej wielkości próbki.
+        self.maxs=[]:
+            Tablica maksymalnych wartości czasu sortowania dla każdej wielkości próbki.
+        self.means=[]:
+            Tablica średnich wartości czasu sortowania dla każdej wielkości próbki.
+
+    Output:
+        self.mins, self.maxs, self.means:
+            przykład: [86767.0, 350492.0, 1414243.0, 10103752.0, 43740715.0, 184754352.0]
+
+Funkcje:
+    bubble_sort(arr):
+        arr:
+            Tablica liczb do posortowania.
+
+        Output:
+            Funkcja zwraca wartości w postaci (time,arr)
+
+            time(integer):
+                Czas sortowania liczony w nanosekundach.
+            arr(list):
+                Posortowana tablica podana jako argument funkcji.
+
+    insertion_sort(arr):
+        arr:
+            Tablica liczb do posortowania.
+
+        Output:
+            Funkcja zwraca wartości w postaci (time,arr)
+
+            time(integer):
+                Czas sortowania liczony w nanosekundach.
+            arr(list):
+                Posortowana tablica podana jako argument funkcji.
+
+    selection_sort(arr):
+        arr:
+            Tablica liczb do posortowania.
+
+        Output:
+            Funkcja zwraca wartości w postaci (time,arr)
+
+            time(integer):
+                Czas sortowania liczony w nanosekundach.
+            arr(list):
+                Posortowana tablica podana jako argument funkcji.
+
+    def generate_vector():
+        Output:
+            Zwraca 3 jednakowe tablice zawierające 6 tablic liczb integer o wielkościach podanych w zadaniu. Przykład: ([[1,2,3],[4,5,6],[7,8,9],[0,1,2],[3,4,5],[6,7,8]],[[1,2,3],[4,5,6],[7,8,9],[0,1,2],[3,4,5],[6,7,8]],[[1,2,3],[4,5,6],[7,8,9],[0,1,2],[3,4,5],[6,7,8]]) .

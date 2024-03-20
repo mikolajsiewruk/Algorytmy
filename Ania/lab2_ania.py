@@ -25,11 +25,11 @@ def selection_sort(wektor):
     start: int = tm.perf_counter_ns()
     l = len(wektor)
     for i in range(0, l - 1):
-        min_ind = 0  # przypisanie że pierwszy indeks ma wartość element o najmniejszej wartość
+        min_ind = 0  #przypisanie że pierwszy indeks ma  element o najmniejszej wartości
         for j in range(i + 1, l):
             if wektor[j] < wektor[min_ind]:  # sprawdzamy czy kolejny element jest mniejszy od naszego min_el
-                min_ind = j
-        wektor[i], wektor[min_ind] = wektor[min_ind], wektor[i]  # jeżeli tak, nastepuje zamiana miejsc
+                min_ind = j #jeżeli tak przypisujemy nową wartość min_ind
+        wektor[i], wektor[min_ind] = wektor[min_ind], wektor[i]   #i zamieniamy miejscami
 
     end = tm.perf_counter_ns()
     czas_sel_sort = end - start
@@ -40,12 +40,12 @@ def insertion_sort(wektor):
     start: int = tm.perf_counter_ns()
     l = len(wektor)
     for i in range(1, l):
-        sp = wektor[i]
-        ind_posort = i - 1
-        while sp < wektor[ind_posort] and ind_posort >= 0:
-            wektor[ind_posort + 1] = wektor[ind_posort]
+        k = wektor[i]
+        ind_posort = i - 1 #odejmjemy 1 aby zrobić miejsce dla nowego elementu
+        while k < wektor[ind_posort] and ind_posort >= 0:
+            wektor[ind_posort + 1] = wektor[ind_posort] #przesuwanie elementów
             ind_posort = ind_posort - 1
-        wektor[ind_posort + 1] = sp
+        wektor[ind_posort + 1] = k
 
     end = tm.perf_counter_ns()
     czas_ins_sort = end - start
@@ -91,6 +91,5 @@ tabela={
     "insertion sort": insert_czas
 }
 df = pd.DataFrame(tabela, index = rozmiary)
-print(df)
 
-print(tbl.tabulate({"Rozmiary": rozmiary,"bubble sort": bubble_czas,"selection sort": selection_czas,"insertion sort": insert_czas}, headers="keys", tablefmt="mixed_grid"))
+print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": bubble_czas,"Selection sort [ns]": selection_czas,"insertion sort [ns]": insert_czas}, headers="keys", tablefmt="mixed_grid"))

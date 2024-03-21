@@ -2,113 +2,95 @@ import random as rnd
 import time as tm
 import matplotlib.pyplot as plt
 import tabulate as tbl
-import numpy as np
+import pandas as pd
 
-def generowanie_wektora(min, max):
-    sizes=[50,100,200,1000,2000,5000]
-    wektory=[]
-    for i in range(0,6):
-        wektory.append([rnd.randint(min,max) for i in range(sizes[i])])
-    return wektory
-def bubble_sort(wektor1):
-    start:int =tm.perf_counter_ns()
-    l=len(wektor1) #długość wektora
-    zamiana=False
-    for i in range(l-1): #Idziemy przez wektor od początku do przedostatniego elementu
-                         #ostatni element pomijamy, bo nie ma go z czym porównać
-        for j in range(0, l-i-1): #przechodzimy przez sąsiednie pary elementów
-            if wektor1[j]>wektor1[j+1]: #sprawdzamy czy element po lewej jest większy od tego po prawej
-                zamiana=True #jeżeli tak następuje zamiana miejsc
-                wektor1[j], wektor1[j+1] = wektor1[j+1], wektor1[j]
-    if not zamiana: #jeżeli nie nastąpiła żadna zamiana to lista została posortowana
+def bubble_sort(wektor):
+    start: int = tm.perf_counter_ns()
+    l = len(wektor)  # długość wektora
+    zamiana = False
+    for i in range(l - 1):  # Idziemy przez wektor od początku do przedostatniego elementu
+        # ostatni element pomijamy, bo nie ma go z czym porównać
+        for j in range(0, l - i - 1):  # przechodzimy przez sąsiednie pary elementów
+            if wektor[j] > wektor[j + 1]:  # sprawdzamy czy element po lewej jest większy od tego po prawej
+                zamiana = True  # jeżeli tak następuje zamiana miejsc
+                wektor[j], wektor[j + 1] = wektor[j + 1], wektor[j]
+    if not zamiana:  # jeżeli nie nastąpiła żadna zamiana to lista została posortowana
         return
-    end=tm.perf_counter_ns()
-    czas_bubble_sort=end-start
-    return czas_bubble_sort, wektor1
+    end = tm.perf_counter_ns()
+    czas_bubble_sort = end - start
+    return czas_bubble_sort, wektor
 
-def selection_sort(wektor2):
-    start = tm.perf_counter_ns()
-    l=len(wektor2)
-    for i in range (l):
-        min_el=wektor2[i]  #przypisanie że pierwszy indeks ma wartość element o najmniejszej wartość
-        for j in range (i+1, l):
-            if wektor2[j]<wektor2[i]: #sprawdzamy czy kolejny element jest mniejszy od naszego min_el
-                min_el=j
-                wektor2[i], wektor2[min_el]=wektor2[min_el], wektor2[i] # jeżeli tak, nastepuje zamiana miejsc
 
-    end=tm.perf_counter_ns()
-    czas_sel_sort=end-start
-    return czas_sel_sort, wektor2
+def selection_sort(wektor):
+    start: int = tm.perf_counter_ns()
+    l = len(wektor)
+    for i in range(0, l - 1):
+        min_ind = 0  # przypisanie że pierwszy indeks ma wartość element o najmniejszej wartość
+        for j in range(i + 1, l):
+            if wektor[j] < wektor[min_ind]:  # sprawdzamy czy kolejny element jest mniejszy od naszego min_el
+                min_ind = j
+        wektor[i], wektor[min_ind] = wektor[min_ind], wektor[i]  # jeżeli tak, nastepuje zamiana miejsc
 
-def insertion_sort(wektor3):
-    start=tm.perf_counter_ns()
-    l=len(wektor3)
+    end = tm.perf_counter_ns()
+    czas_sel_sort = end - start
+    return czas_sel_sort, wektor
+
+
+def insertion_sort(wektor):
+    start: int = tm.perf_counter_ns()
+    l = len(wektor)
     for i in range(1, l):
-        sp=wektor3[i]
-        ind_posort=i-1
-        while sp<wektor3[ind_posort] and ind_posort>=0:
-            wektor3[ind_posort+1]=wektor3[ind_posort]
-            ind_posort=ind_posort-1
-        wektor3[ind_posort+1]=sp
+        sp = wektor[i]
+        ind_posort = i - 1
+        while sp < wektor[ind_posort] and ind_posort >= 0:
+            wektor[ind_posort + 1] = wektor[ind_posort]
+            ind_posort = ind_posort - 1
+        wektor[ind_posort + 1] = sp
 
-    end=tm.perf_counter_ns()
-    czas_ins_sort=end-start
-    return czas_ins_sort, wektor3
+    end = tm.perf_counter_ns()
+    czas_ins_sort = end - start
+    return czas_ins_sort, wektor
 
-wektory=generowanie_wektora(10,1000)
-w1=wektory.copy()
-w2=wektory.copy()
-w3=wektory.copy()
-print(w1)
-print(w2)
-print(w3)
-czas_bubble=[]
-czas_ins=[]
-czas_sel=[]
 
-for i in range(0,6):
-    czas_bubble.append(bubble_sort(w1[i]))
-    czas_ins.append(insertion_sort(w2[i]))
-    czas_sel.append(selection_sort(w3[i]))
-'''wektor_podany=generowanie_wektora(min, max)
-print(wektor_podany)'''
+bubble_wektory = []
+selection_wektory = []
+insert_wektory = []
+bubble_czas = []
+insert_czas = []
+selection_czas = []
+rozmiary = [50, 100, 200, 500, 1000, 2000]
 
-print(czas_ins)
-print(czas_sel)
-print(czas_bubble)
+for i in range(0, len(rozmiary)):
+    temporary = [rnd.randint(0, 5000) for _ in range(0, rozmiary[i])]
+    bubble_wektory.append(temporary.copy())
+    selection_wektory.append(temporary.copy())
+    insert_wektory.append(temporary.copy())
 
-N=int(input("Podaj długość wektora: "))
-min=int(input("Podaj minimalną wartość wektora: "))
-max=int(input("Podaj maksymalną wartość wektora: "))
+bubble_czas = [bubble_sort(bubble_wektory[i])[0] for i in range(0, 6)]
+selection_czas = [selection_sort(selection_wektory[i])[0] for i in range(0, 6)]
+insert_czas = [insertion_sort(insert_wektory[i])[0] for i in range(0, 6)]
 
-wektor=generowanie_wektora(min,max)
-wektor1=wektor.copy()
-wektor2=wektor.copy()
-wektor3=wektor.copy()
-print(wektor)
-print(wektor1)
-
-czas_bubble_sort=bubble_sort(wektor1)
-
-print("Wektor posortowany przy użyciu sortowania bąbelkowego: ", wektor1)
-print("Czas sortowania:",czas_bubble_sort, "nanosekund")
-
-czas_sel_sort=selection_sort(wektor2)
-print("Wektor posortowany przy użyciu sortowania poprzez wybór: ", wektor2)
-print("Czas sortowania:",czas_sel_sort, "nanosekund")
-
-czas_ins_sort=insertion_sort(wektor3)
-print("Wektor posortowany przy użyciu sortowania przez wstawianie: ", wektor3)
-print("Czas sortowania:", czas_ins_sort, "nanosekund")
 
 def rysowanie_wykresu():
-    plt.plot([50, 100, 200, 1000, 2000, 5000], czas_ins, label="Insertion sort")
-    plt.plot([50,100,200,1000,2000,5000],czas_bubble, label="Bubble sort")
-    plt.plot([50,100,200,1000,2000,5000],czas_sel, label="Selection sort")
+    plt.plot([50, 100, 200, 1000, 2000, 5000], bubble_czas, label="Sortowanie bombelkowe")
+    plt.plot([50, 100, 200, 1000, 2000, 5000], insert_czas, label="Sorotwanie przez wstawianie")
+    plt.plot([50, 100, 200, 1000, 2000, 5000], selection_czas, label="Sortowanie przez wybór")
     plt.xlabel("Rozmiar wektora")
     plt.ylabel("Czas sortowania [nanosekundy]")
     plt.title("Porównanie czasu sortowania algorytmów")
     plt.legend()
     plt.grid(True)
     plt.show()
+
+
 rysowanie_wykresu()
+
+tabela={
+    "bubble sort": bubble_czas,
+    "selection sort": selection_czas,
+    "insertion sort": insert_czas
+}
+df = pd.DataFrame(tabela, index = rozmiary)
+print(df)
+
+print(tbl.tabulate({"Rozmiary": rozmiary,"bubble sort": bubble_czas,"selection sort": selection_czas,"insertion sort": insert_czas}, headers="keys", tablefmt="mixed_grid"))

@@ -38,4 +38,31 @@ def counting_sort(arr):
             new.append(j)
     return new
 
-print(counting_sort([3,2,10,1,11,13]))
+def quicksort(arr):
+    if len(arr)>1:
+        pivot=arr[-2]
+        l=0
+        r=len(arr)-1
+        while l<r:
+            print(pivot)
+            print(arr)
+            print(l,r)
+            if arr[l]>pivot and arr[r]<pivot:
+                arr[l],arr[r]=arr[r],arr[l]
+                r-=1
+                l+=1
+            elif arr[l]>=pivot:
+                r-=1
+            elif arr[r]<=pivot:
+                l+=1
+            else:
+                l += 1
+                r -= 1
+        c=arr.count(pivot)
+        left = arr[:arr.index(pivot)+c-1]
+        right = arr[arr.index(pivot)+c-1:]
+        a=quicksort(left)
+        b=quicksort(right)
+        arr=a+b
+    return arr
+print(quicksort([33,77,77,77,77, 17, 79, 67, 91, 77, 45, 90, 95, 96]))

@@ -1,3 +1,7 @@
+import random
+l=[]
+for i in range(0,50):
+    l.append(random.randint(0,1000))
 def merge_sort(arr):
     if len(arr)>1:
         mid=int(len(arr)//2)
@@ -39,7 +43,7 @@ def counting_sort(arr):
     return new
 
 def quicksort(arr):
-    if len(arr)>1:
+    if len(arr)>2:
         pivot=arr[-2]
         l=0
         r=len(arr)-1
@@ -49,8 +53,12 @@ def quicksort(arr):
             print(l,r)
             if arr[l]>pivot and arr[r]<pivot:
                 arr[l],arr[r]=arr[r],arr[l]
-                r-=1
+            elif arr[l]==pivot and arr[r]<pivot:
+                arr[l], arr[r] = arr[r], arr[l]
                 l+=1
+            elif arr[r] == pivot and arr[l] > pivot:
+                arr[l], arr[r] = arr[r], arr[l]
+                r-=1
             elif arr[l]>=pivot:
                 r-=1
             elif arr[r]<=pivot:
@@ -59,10 +67,14 @@ def quicksort(arr):
                 l += 1
                 r -= 1
         c=arr.count(pivot)
-        left = arr[:arr.index(pivot)+c-1]
-        right = arr[arr.index(pivot)+c-1:]
+        left = arr[:arr.index(pivot)]
+        right = arr[arr.index(pivot):]
+        if not left or not right:
+            arr = left+right
+        print(left)
+        print(right)
         a=quicksort(left)
         b=quicksort(right)
         arr=a+b
     return arr
-print(quicksort([33,77,77,77,77, 17, 79, 67, 91, 77, 45, 90, 95, 96]))
+print(quicksort(l))

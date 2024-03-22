@@ -43,7 +43,7 @@ def counting_sort(arr):
     return new
 
 def quicksort(arr):
-    if len(arr)>2:
+    if len(arr)>=2:
         pivot=arr[-2]
         l=0
         r=len(arr)-1
@@ -67,14 +67,22 @@ def quicksort(arr):
                 l += 1
                 r -= 1
         c=arr.count(pivot)
-        left = arr[:arr.index(pivot)]
-        right = arr[arr.index(pivot):]
+        left = arr[:arr.index(pivot)+c]
+        right = arr[arr.index(pivot)+c:]
         if not left or not right:
             arr = left+right
+            return arr
         print(left)
         print(right)
         a=quicksort(left)
         b=quicksort(right)
         arr=a+b
     return arr
-print(quicksort(l))
+
+sizes = [50, 100, 200, 500, 1000, 2000]
+bubble_arrays=[]
+for i in range(0, len(sizes)):
+    temporary = [random.randint(0, 5000) for _ in range(0, sizes[i])]
+    bubble_arrays.append(temporary.copy())
+
+print(merge_sort(bubble_arrays[3]))

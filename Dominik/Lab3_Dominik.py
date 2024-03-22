@@ -140,4 +140,12 @@ def sorting(N, vector_sizes):
 
 
 sizes = [50, 100, 200, 500, 1000, 2000]
-sorting(100, sizes)
+x = input("Podaj liczbę iteracji programu:")
+if x.isdigit():
+    x = int(x)
+    if x > 0:
+        sorting(x, sizes)
+    else:
+        print("Liczba iteracji musi być większa od 0")
+else:
+    print("Liczba iteracji musi byc liczbą")

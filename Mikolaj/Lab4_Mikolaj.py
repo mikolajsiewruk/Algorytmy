@@ -156,7 +156,6 @@ for i in range(0,100):
     merge_time.append(m_temp)
     counting_time.append(c_temp)
     quicksort_time.append(q_temp)
-    print(i)
 
 merge=Results(merge_time)
 counting=Results(counting_time)

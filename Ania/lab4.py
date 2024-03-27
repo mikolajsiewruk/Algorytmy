@@ -230,3 +230,12 @@ data = {
 df = pd.DataFrame(data)
 
 print(df)
+
+#stara nie dziala
+tabela={
+    "Bubble sort": bubble_czas,
+    "Inserion sort": insertion_czas,
+    "Selection sort": selection_czas
+}
+df = pd.DataFrame(tabela, index = rozmiary)
+print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": bubble_czas,"Inserion sort [ns]": insertion_czas,"Selection sort [ns]": selection_czas}, headers="keys", tablefmt="mixed_grid"))

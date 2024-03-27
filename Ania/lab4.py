@@ -3,7 +3,7 @@ import time as tm
 import matplotlib.pyplot as plt
 import tabulate as tbl
 import pandas as pd
-from tabulate import tabulate
+
 
 class Wyniki:
     def __init__(self, czas_wektory):
@@ -233,9 +233,10 @@ print(df)
 
 #stara nie dziala
 tabela={
-    "Bubble sort": bubble_czas,
-    "Inserion sort": insertion_czas,
-    "Selection sort": selection_czas
+    "Bubble sort": merge_czas[0],
+    "Inserion sort": counting_czas[0],
+    "Selection sort": quick_czas[0]
 }
 df = pd.DataFrame(tabela, index = rozmiary)
-print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": bubble_czas,"Inserion sort [ns]": insertion_czas,"Selection sort [ns]": selection_czas}, headers="keys", tablefmt="mixed_grid"))
+print(df)
+print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": merge_czas[0],"Inserion sort [ns]": counting_czas[0],"Selection sort [ns]": quick_czas[0]}, headers="keys", tablefmt="mixed_grid"))

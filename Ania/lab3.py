@@ -1,6 +1,8 @@
 from random import randint
 import time as tm
 import matplotlib.pyplot as plt
+import tabulate as tbl
+import pandas as pd
 
 # klasa  do przechowywania danych sortowań i licząca ich parametry
 class Wyniki:
@@ -155,10 +157,10 @@ plt.grid(True)
 
 plt.show()
 
-tabela={
+'''tabela={
     "Bubble sort": bubble_czas,
-    "Inserion sort": insertion_czas,
+    "Inserion sort": insert_czas,
     "Selection sort": selection_czas
 }
-df = pd.DataFrame(tabela, index = rozmiary)
-print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": bubble_czas,"Inserion sort [ns]": insertion_czas,"Selection sort [ns]": selection_czas}, headers="keys", tablefmt="mixed_grid"))
+df = pd.DataFrame(tabela, index = rozmiary)'''
+print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": bubble_czas[0],"Inserion sort [ns]": insert_czas[0],"Selection sort [ns]": selection_czas[0]}, headers="keys", tablefmt="mixed_grid"))

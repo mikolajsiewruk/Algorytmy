@@ -213,14 +213,20 @@ plt.grid(True)
 
 plt.show()
 
-tabela = {
+#jakieś gówno z czatu
+data = {
     "Rozmiary": rozmiary,
-    "Merge sort [ns]": [merge.means, merge.mins, merge.maxs],
-    "Counting sort [ns]": [counting.means, counting.mins, counting.maxs],
-    "Quick sort [ns]": [quick.means, quick.mins, quick.maxs]
+    "Merge sort [ns]": merge.means,
+    "Counting sort [ns]": counting.means,
+    "Quick sort [ns]": quick.means,
+    "Merge min [ns]": merge.mins,
+    "Counting min [ns]": counting.mins,
+    "Quick min [ns]": quick.mins,
+    "Merge max [ns]": merge.maxs,
+    "Counting max [ns]": counting.maxs,
+    "Quick max [ns]": quick.maxs,
 }
 
-df = pd.DataFrame(tabela)
+df = pd.DataFrame(data)
+
 print(df)
-
-

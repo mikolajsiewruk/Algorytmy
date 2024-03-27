@@ -48,24 +48,25 @@ class Sorter:
 
     def merge_sort(self, wektor):
         if len(wektor)>1:
-            srodek=(len(wektor) // 2) #dzielenie wektoru na 2 równe części, lewą i prawą
-            lewa = wektor[:srodek]
+            srodek=(len(wektor) // 2) #wyznaczanie środka wektora
+            lewa = wektor[:srodek] # podzielenie wektora na część lewą i prawą
             prawa = wektor[srodek:]
-            self.merge_sort(lewa)
+            self.merge_sort(lewa) # rekurencyjne wywoływanie dla każdej połowy
             self.merge_sort(prawa)
 
-            i=j=k=0 # początkowe indeksy podtablic
+            i=j=k=0 # początkowe indeksy tablic
 
             while i < len(lewa) and j < len(prawa):
-                if lewa[i] < prawa[j]: # jezeli element na pozycji i (lewa część) jest mniejszy od el na pozycji j (prawa część)
-                    wektor[k] = lewa[i] # umieszczamy go w wektorze k na pozycji i
-                    i += 1 # zwiększamy indeks tablicy
+                # porównywanie elementów lewej i prawej części wektora
+                if lewa[i] < prawa[j]: # jezeli elemeny jest mniejszy w części lewej to umieszczamy go w tablicy docelowej
+                    wektor[k] = lewa[i]
+                    i += 1 # zwiększamy indeks tablicy lewej części
                 else:
                     wektor[k] = prawa[j]
-                    j += 1
+                    j += 1 # zwiększamy indeks tablicy prawej części
                 k += 1 # zwiększamy indeks tablicy docelowej
 
-            # scalanie części lewej i prawej
+            # kopiowanie pozostałych elementów z obu części
             while i < len(lewa):
                 wektor[k] = lewa[i]
                 i += 1
@@ -78,12 +79,12 @@ class Sorter:
         return wektor
 
     def counting_sort(self, wektor):
-        maks=max(wektor)
-        mini=min(wektor)
-        posort=[] #posorotwane
+        maks=max(wektor) # znalezienie największej weartości w wektorze
+        mini=min(wektor) # znalezienie najmniejszej weartości w wektorze
+        posort=[] # tablica na posortowane elementy
         k=[0]*(maks+1) # lista zer, jej długość jest ustalana na podstawie maksymalnej wartości w wektorze zwiększonej o 1
         for i in range(len(wektor)): #przechodzenie przez całą długość wektora
-            k[wektor[i]]= k[wektor[i]] + 1 # dla każdego występowania danego elementu wektora i zwiększamy o jednen liczbę zer
+            k[wektor[i]]= k[wektor[i]] + 1 # zwiększenie liczby wystąpień danego elementu wektora tablizy z zeramo o 1
         for j in range(len(k)): # przechodzimy przez listę zer
             if k[j]!=0: # jeżeli element j jest różny od 0, to dodajemy go do posortowanej części
                 posort.append(j)
@@ -139,7 +140,7 @@ rozmiary = [50, 100, 200, 500, 1000, 2000]
 sorter=Sorter()
 
 # 100 krotne powtórzenie sortowań (Metoda Monte Carlo)
-for i in range(0,100):
+for i in range(0,10):
     merge_wektory, counting_wektory, quick_wektory = generowanie_wektorow()
     m_temp = []
     c_temp = []
@@ -212,14 +213,14 @@ plt.grid(True)
 
 plt.show()
 
-tabela={
-    "merge sort": merge_czas,
-    "counting sort": counting_czas,
-    "quick sort": quick_czas
+tabela = {
+    "Rozmiary": rozmiary,
+    "Merge sort [ns]": [merge.means, merge.mins, merge.maxs],
+    "Counting sort [ns]": [counting.means, counting.mins, counting.maxs],
+    "Quick sort [ns]": [quick.means, quick.mins, quick.maxs]
 }
-df = pd.DataFrame(tabela, index = rozmiary)
-print(tbl.tabulate({"Rozmiary": rozmiary,"Merge sort [ns]": merge_czas,"Counting sort [ns]": counting_czas,"Quick sort [ns]": quick_czas}, headers="keys", tablefmt="mixed_grid"))
 
-
+df = pd.DataFrame(tabela)
+print(df)
 
 

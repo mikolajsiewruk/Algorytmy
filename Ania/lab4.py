@@ -211,7 +211,7 @@ plt.ylabel("Czas sortowania")
 plt.legend()
 plt.grid(True)
 
-# plt.show()
+plt.show()
 
 tabela={
     "Merge sort": merge_czas[0],

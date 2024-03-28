@@ -140,7 +140,7 @@ rozmiary = [50, 100, 200, 500, 1000, 2000]
 sorter=Sorter()
 
 # 100 krotne powtórzenie sortowań (Metoda Monte Carlo)
-for i in range(0,10):
+for i in range(0,100):
     merge_wektory, counting_wektory, quick_wektory = generowanie_wektorow()
     m_temp = []
     c_temp = []
@@ -211,32 +211,12 @@ plt.ylabel("Czas sortowania")
 plt.legend()
 plt.grid(True)
 
-plt.show()
+# plt.show()
 
-#jakieś gówno z czatu
-data = {
-    "Rozmiary": rozmiary,
-    "Merge sort [ns]": merge.means,
-    "Counting sort [ns]": counting.means,
-    "Quick sort [ns]": quick.means,
-    "Merge min [ns]": merge.mins,
-    "Counting min [ns]": counting.mins,
-    "Quick min [ns]": quick.mins,
-    "Merge max [ns]": merge.maxs,
-    "Counting max [ns]": counting.maxs,
-    "Quick max [ns]": quick.maxs,
-}
-
-df = pd.DataFrame(data)
-
-print(df)
-
-#stara nie dziala
 tabela={
-    "Bubble sort": merge_czas[0],
-    "Inserion sort": counting_czas[0],
-    "Selection sort": quick_czas[0]
+    "Merge sort": merge_czas[0],
+    "Counting sort": counting_czas[0],
+    "Quick sort": quick_czas[0]
 }
 df = pd.DataFrame(tabela, index = rozmiary)
-print(df)
-print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": merge_czas[0],"Inserion sort [ns]": counting_czas[0],"Selection sort [ns]": quick_czas[0]}, headers="keys", tablefmt="mixed_grid"))
+print(tbl.tabulate({"Rozmiary": rozmiary,"Merge sort  [ns]": merge_czas[0],"Counting sort [ns]": counting_czas[0],"Quick sort [ns]": quick_czas[0]}, headers="keys", tablefmt="mixed_grid"))

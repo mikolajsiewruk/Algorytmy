@@ -114,6 +114,11 @@ class Sorter:
             arr = a + b
         return arr
 def generate_vector():
+    '''
+    Generates random vectors with sizes given below
+
+    :return: list of lists containing every vector size for every sorting algorithm
+    '''
     sizes = [50, 100, 200, 500, 1000, 2000]
     merge_arrays = []
     counting_arrays = []

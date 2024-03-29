@@ -1,6 +1,8 @@
 from random import randint
 import time as tm
 import matplotlib.pyplot as plt
+import tabulate as tbl
+import pandas as pd
 
 # klasa  do przechowywania danych sortowań i licząca ich parametry
 class Wyniki:
@@ -101,12 +103,12 @@ insert_czas = []
 selection_czas = []
 rozmiary = [50, 100, 200, 500, 1000, 2000]
 
-# 100 krotne powtórzenie sortowań (Metoda Monte Carlo), w instrukcji jest żeby ilość iteracji podawać z klawiatury (nie chce mi sie)
-for i in range(0,100):
-    bubble_arrays,insertion_arrays,selection_arrays=generowanie_wektorow() # tworzenie nowych wektorów próbek dla każdego sortowania
-    bubble_czas.append([bubble_sort(bubble_arrays[i])[0] for i in range(0, 6)]) # w każdej iteracji do tabeli czasów dodawane są kolejne czasy sortowania dla każdego rozmiaru tabeli wejściowej
-    insert_czas.append([insertion_sort(insertion_arrays[i])[0] for i in range(0, 6)])
-    selection_czas.append([selection_sort(selection_arrays[i])[0] for i in range(0, 6)])
+# 100 krotne powtórzenie sortowań (Metoda Monte Carlo)
+for i in range(0,10):
+    bubble_wektory,insertion_wektory,selection_wektory=generowanie_wektorow() # tworzenie nowych wektorów próbek dla każdego sortowania
+    bubble_czas.append([bubble_sort(bubble_wektory[i])[0] for i in range(0, 6)]) # w każdej iteracji do tabeli czasów dodawane są kolejne czasy sortowania dla każdego rozmiaru tabeli wejściowej
+    insert_czas.append([insertion_sort(insertion_wektory[i])[0] for i in range(0, 6)])
+    selection_czas.append([selection_sort(selection_wektory[i])[0] for i in range(0, 6)])
 
 # inicjalizacja klasy Results dla wszystkich sortowań, ważne, żeby podać czasy! Klasa sama wyznaczy sobie już wszystko, chillerka :)
 bubble=Wyniki(bubble_czas)
@@ -154,3 +156,11 @@ plt.legend()
 plt.grid(True)
 
 plt.show()
+
+'''tabela={
+    "Bubble sort": bubble_czas,
+    "Inserion sort": insert_czas,
+    "Selection sort": selection_czas
+}
+df = pd.DataFrame(tabela, index = rozmiary)'''
+print(tbl.tabulate({"Rozmiary": rozmiary,"Bubble sort [ns]": bubble_czas[0],"Inserion sort [ns]": insert_czas[0],"Selection sort [ns]": selection_czas[0]}, headers="keys", tablefmt="mixed_grid"))

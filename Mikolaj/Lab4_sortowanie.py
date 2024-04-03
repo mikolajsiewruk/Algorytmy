@@ -83,11 +83,11 @@ def quicksort(arr): # złożoność obliczeniowa O(n*log(n)), najgorszy przypade
 
 m,c,q=generate()
 
-'''print(m)
-print(merge_sort(m[0]))'''
+print(m)
+print(merge_sort(m[0]))
 
-'''print(c)
-print(counting_sort(c[0]))'''
+print(c)
+print(counting_sort(c[0]))
 
 print(q)
 print(quicksort(q[0]))

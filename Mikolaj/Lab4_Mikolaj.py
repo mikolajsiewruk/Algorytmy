@@ -43,7 +43,7 @@ class Sorter:
         self.merge_sorted=[]
         self.counting_sorted=[]
         self.quicksorted=[]
-    def merge_sort(self,arr):
+    def merge_sort(self,arr): # O(n*log(n))
         if len(arr) > 1:
             mid = int(len(arr) // 2)
             L = arr[:mid]
@@ -71,7 +71,7 @@ class Sorter:
                 k += 1
         return arr
 
-    def counting_sort(self,arr):
+    def counting_sort(self,arr): # O(n+k) gdzie n to liczba wyrazów tablicy a k to zakres
         top = max(arr)
         new = []
         zeros = [0] * (top + 1)
@@ -82,9 +82,9 @@ class Sorter:
                 new.append(j)
         return new
 
-    def quicksort(self,arr):
+    def quicksort(self,arr):  # złożoność obliczeniowa O(n*log(n)), najgorszy przypadek O(n^2) kiedy pivot jest duży i powoduje niezbalansowany rozkład na strony
         if len(arr) >= 2:
-            pivot = arr[-2]
+            pivot = arr[len(arr) // 2]
             l = 0
             r = len(arr) - 1
             while l < r:
@@ -104,16 +104,15 @@ class Sorter:
                     l += 1
                     r -= 1
             c = arr.count(pivot)
-            left = arr[:arr.index(pivot) + c]
-            right = arr[arr.index(pivot) + c:]
-            if not left or not right:
-                arr = left + right
-                return arr
+            pvs = [x for x in arr if x == pivot]
+            left = [x for x in arr if x < pivot]
+            right = [x for x in arr if x > pivot]
+
             a = self.quicksort(left)
             b = self.quicksort(right)
-            arr = a + b
+            arr = a + pvs + b
         return arr
-def generate_vector():
+def generate_vector()-> tuple:
     '''
     Generates random vectors with sizes given below
 

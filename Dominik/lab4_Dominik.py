@@ -121,22 +121,24 @@ def sorting(N, vector_sizes):
     for i in range(N):
         for j in range(len(vector_sizes)):
             start = tm.perf_counter_ns()
-            merge_sort(m_arrays[j][i])
+            x = merge_sort(m_arrays[j][i])
             stop = tm.perf_counter_ns()
             czas = stop - start
+            # print(x)
             m_times[j][i] = czas
 
             start = tm.perf_counter_ns()
-            count_sort(c_arrays[j][i])
+            x = count_sort(c_arrays[j][i])
             stop = tm.perf_counter_ns()
             czas = stop - start
+            # print(x)
             c_times[j][i] = czas
 
             start = tm.perf_counter_ns()
-            quick_sort(q_arrays[j][i])
+            x = quick_sort(q_arrays[j][i])
             stop = tm.perf_counter_ns()
             czas = stop - start
-            # print(quick_sort(q_arrays[j][i]))
+            # print(x)
             q_times[j][i] = czas
     m_min, m_max, m_mean = values_of_sorting(vector_sizes, m_times)
     c_min, c_max, c_mean = values_of_sorting(vector_sizes, c_times)

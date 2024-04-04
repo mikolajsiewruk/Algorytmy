@@ -29,9 +29,17 @@ class Node1:
             return self.right.value
 
     def print_tree(self):
+        """
+        Broken method use at your own risk.
+        :return: Something fucked up.
+        """
+        i=0
         if self.left:
             self.left.print_tree()
-        print(self.value),
+            i+=10
+        if i!=0 and self.left.left and self.left.right and self.right.left and self.right.right:
+            i+=10
+        print(i*" " + f"{self.value}") # dodałem jakieś gowno tylko idk jak root odseparować bardziej
         if self.right:
             self.right.print_tree()
 

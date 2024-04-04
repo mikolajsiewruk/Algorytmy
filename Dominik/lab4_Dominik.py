@@ -3,36 +3,60 @@ import time as tm
 import copy
 import matplotlib.pyplot as plt
 
-def split(to_split):
-    if len(to_split) <=1:
-        return to_split
-    else:
-        mid=int(len(to_split) / 2)
-        a1= to_split[0:mid]
-        a2= to_split[mid:]
-        return split(a1) + split(a2)
+# Początkowa wersja merge_sort rozdzielona na 3 funkcje xD
+# def split(to_split):
+#     if len(to_split) <=1:
+#         return to_split
+#     else:
+#         mid=int(len(to_split) / 2)
+#         a1= to_split[0:mid]
+#         a2= to_split[mid:]
+#         return split(a1) + split(a2)
+#
+# def merge(left, right):
+#     merged = []
+#     i, j = 0, 0
+#
+#     while i < len(left) and j < len(right):
+#         if left[i] < right[j]:
+#             merged.append(left[i])
+#             i+=1
+#         else:
+#             merged.append(right[j])
+#             j+=1
+#
+#     merged.extend(left[i:])
+#     merged.extend(right[j:])
+#     return merged
+#
+# def merge_sort(to_sort):
+#     if len(to_sort) <= 1:
+#         return to_sort
+#     splited = split(to_sort)
+#     return merge(merge_sort(splited[:len(splited)//2]), merge_sort(splited[len(splited)//2:]))
 
-def merge(left, right):
+def merge_sort(to_sort):
+    if len(to_sort) <= 1:
+        return to_sort
+
+    mid = len(to_sort) // 2
+    left = merge_sort(to_sort[:mid])
+    right = merge_sort(to_sort[mid:])
+
     merged = []
     i, j = 0, 0
 
     while i < len(left) and j < len(right):
         if left[i] < right[j]:
             merged.append(left[i])
-            i+=1
+            i += 1
         else:
             merged.append(right[j])
-            j+=1
+            j += 1
 
     merged.extend(left[i:])
     merged.extend(right[j:])
     return merged
-
-def merge_sort(to_sort):
-    if len(to_sort) <= 1:
-        return to_sort
-    splited = split(to_sort)
-    return merge(merge_sort(splited[:len(splited)//2]), merge_sort(splited[len(splited)//2:]))
 
 
 def count_sort(to_sort):
@@ -112,6 +136,7 @@ def sorting(N, vector_sizes):
             quick_sort(q_arrays[j][i])
             stop = tm.perf_counter_ns()
             czas = stop - start
+            # print(quick_sort(q_arrays[j][i]))
             q_times[j][i] = czas
     m_min, m_max, m_mean = values_of_sorting(vector_sizes, m_times)
     c_min, c_max, c_mean = values_of_sorting(vector_sizes, c_times)

@@ -69,8 +69,8 @@ class Wezel:
 
 
 
-a = Drzewo ([20,5,13,18,189,249])
-a.tworzenie_drzewa()
+d = Drzewo ([20,5,13,18,189,249])
+d.tworzenie_drzewa()
 
 
 

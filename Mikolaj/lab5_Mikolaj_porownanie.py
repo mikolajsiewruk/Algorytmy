@@ -3,63 +3,6 @@ import matplotlib.pyplot as plt
 import time as tm
 
 
-class TreeNode:
-    """
-    Individual node of a Tree class.
-    """
-    def __init__(self,val):
-        self.val=val
-        self.left=None
-        self.right=None
-
-
-class MaxHeap:
-    """
-    Max Heap data structure.
-    """
-    def __init__(self,arr):
-        self.arr=arr
-        self.root=TreeNode(max(self.arr))
-        self.arr.remove(max(self.arr))
-        self.temp=self.arr
-
-    def add_node(self, node, val):
-        """
-        Add a node to the Heap class.
-        :param node: Root node
-        :param val: Value of a node to add
-        :return:
-        """
-        q = []
-        q.append(node)
-        while q:
-            current = q[0]
-            q.pop(0)
-            if not current.left:
-                #print(f"{current.val}  added {val} left")
-                current.left = TreeNode(val)
-                break
-            else:
-                q.append(current.left)
-            if not current.right:
-                #print(f"{current.val}  added {val} right")
-                current.right = TreeNode(val)
-                break
-            else:
-                q.append(current.right)
-
-    def make_heap(self):
-        """
-        Creates a complete Heap from the initialization array by choosing max value in every step.
-        :return:
-        """
-        temp=self.temp
-        for i in range(len(self.temp)):
-            m=max(temp)
-            self.add_node(self.root,m)
-            temp.remove(m)
-
-
 class Sorter:
     def __init__(self):
         self.merge_sorted=[]

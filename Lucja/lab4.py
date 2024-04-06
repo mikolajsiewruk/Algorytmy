@@ -1,6 +1,7 @@
-import random
 import time as tm
 import matplotlib.pyplot as plt
+from numpy.random import random
+
 
 class Results:
     # ważne! tak się deklaruje klasy w python, bardzo przydatne, warto umieć! (napisanie jednej klasy zaoszczędziło mi pisania 100 linijek kodu dla tego zadania)
@@ -38,80 +39,67 @@ class Results:
             self.mins.append(min(arr))
             self.maxs.append(max(arr))
             self.means.append(sum(arr)/len(arr))
-class Sorter:
-    def __init__(self):
-        self.merge_sorted=[]
-        self.counting_sorted=[]
-        self.quicksorted=[]
-    def merge_sort(self,arr): # O(n*log(n))
-        if len(arr) > 1:
-            mid = int(len(arr) // 2)
-            L = arr[:mid]
-            R = arr[mid:]
-            self.merge_sort(L)
-            self.merge_sort(R)
+def merge_sort(tablica):
+    if len(tablica) > 1:  # jesli dlugosc tablicy wieksza niz jeden
+        srodek = int(len(tablica) // 2)  # to podziel na 2
+    prawa = tablica[srodek:]
+    lewa = tablica[:srodek]  # dzieli na czesci lewa od poczatku do srodka prawa od srodka do konca
+    merge_sort(lewa)
+    merge_sort(prawa)
+    p = 0
+    t = 0
+    l = 0
 
-            i = j = k = 0
-            while i < len(L) and j < len(R):
-                if L[i] <= R[j]:
-                    arr[k] = L[i]
-                    i += 1
-                else:
-                    arr[k] = R[j]
-                    j += 1
-                k += 1
-            while i < len(L):
-                arr[k] = L[i]
-                i += 1
-                k += 1
+    while l < len(lewa) and p < len(prawa):  # porównywanie elementów z lewej i z prawej tablicy
+        if lewa[l] < prawa[p]:
+            tablica[t] = lewa[l]  # jesli lewa jest mniejsza to przypisywany do tablicy
+            l = l + 1
+        else:
+            tablica[t] = prawa[p]  # jesli prawa jest mniejsza to przypisywany do tablicy
+            p = l + 1
+        t = t + 1  # zwiekszenie indeksu
+        while l < len(lewa):  # na niesprawdzone elementy
+            tablica[t] = lewa[l]
+            l = l + 1
+            t = t + 1
+        while p < len(prawa):
+            tablica[t] = prawa[p]
+            p = p + 1
+            t = t + 1
+    return tablica
 
-            while j < len(R):
-                arr[k] = R[j]
-                j += 1
-                k += 1
-        return arr
 
-    def counting_sort(self,arr): # O(n+k) gdzie n to liczba wyrazów tablicy a k to zakres
-        top = max(arr)
-        new = []
-        zeros = [0] * (top + 1)
-        for i in range(len(arr)):
-            zeros[arr[i]] = zeros[arr[i]] + 1
-        for j in range(len(zeros)):
-            if zeros[j] != 0:
-                new.append(j)
-        return new
+def counting_sort(tablica):
+    gora = max(tablica)  # wart max
+    y = []  # lista na posortowane argumeny
+    k = [0] * (gora + 1)  # tablica k o długości ymax - ymin + 1 zawierającą same wartości 0
+    for i in range(len(tablica)):
+        k[tablica[i]] = k[tablica[
+            i]] + 1  # iteruj po każdym elemencie yi z listy y i zwiększ o 1 wartość listy k w indeksie yi − ymin
+    for j in range(len(k)):
+        if k[j] != 0:  # dodaje indeks do listy wyjsciowej jesli nie jest on rowny 0
+            y.append(j)
+    return y
 
-    def quicksort(self,arr):  # złożoność obliczeniowa O(n*log(n)), najgorszy przypadek O(n^2) kiedy pivot jest duży i powoduje niezbalansowany rozkład na strony
-        if len(arr) >= 2:
-            pivot = arr[len(arr) // 2]
-            l = 0
-            r = len(arr) - 1
-            while l < r:
-                if arr[l] > pivot and arr[r] < pivot:
-                    arr[l], arr[r] = arr[r], arr[l]
-                elif arr[l] == pivot and arr[r] < pivot:
-                    arr[l], arr[r] = arr[r], arr[l]
-                    l += 1
-                elif arr[r] == pivot and arr[l] > pivot:
-                    arr[l], arr[r] = arr[r], arr[l]
-                    r -= 1
-                elif arr[l] >= pivot:
-                    r -= 1
-                elif arr[r] <= pivot:
-                    l += 1
-                else:
-                    l += 1
-                    r -= 1
-            c = arr.count(pivot)
-            pvs = [x for x in arr if x == pivot]
-            left = [x for x in arr if x < pivot]
-            right = [x for x in arr if x > pivot]
+def quick_sort(tablica):
+    wiekszy = []
+    mniejszy = []
+    srodkowy = []
+    if len(tablica) > 1 : #wiecej niz 1 element - nie jest posortowana
+        pivot = tablica[len(tablica) // 2] #wybiera srodkowy element jako pivot
+        for x in tablica:
+            if x < pivot: #jesli dany x bedzie mniejszy niz pivot
+                mniejszy.append(x) #dodaj do listy mniejszy
+            elif x == pivot: #jesli dany x bedzie rowny to dodaj do listy rowny
+                srodkowy.append(x)
+            elif x > pivot:
+                wiekszy.append(x) #jesli wiekszy to do listy wiekszy
 
-            a = self.quicksort(left)
-            b = self.quicksort(right)
-            arr = a + pvs + b
-        return arr
+        a = quick_sort(mniejszy)
+        b = quick_sort(wiekszy)
+        tab = a + srodkowy + b #zlaczenie list
+    return tab
+
 def generate_vector()-> tuple:
     '''
     Generates random vectors with sizes given below
@@ -134,7 +122,7 @@ counting_time = []
 quicksort_time = []
 
 sizes = [50, 100, 200, 500, 1000, 2000]
-sorter=Sorter()
+sorter = Sorter()
 
 # 100 krotne powtórzenie sortowań (Metoda Monte Carlo), w instrukcji jest żeby ilość iteracji podawać z klawiatury (nie chce mi sie)
 for i in range(0,100):

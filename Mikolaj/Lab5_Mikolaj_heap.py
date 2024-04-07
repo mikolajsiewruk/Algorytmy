@@ -152,9 +152,7 @@ g=h.make_heap()
 print(g)
 G=nx.Graph()
 G.add_edges_from(g)
-'''vec=generate_vector()
-print(vec)
-print(heapsort(vec))'''
+
 
 # grafowanie z neta wzięte
 def hierarchy_pos(G, root=None, width=1., vert_gap=0.2, vert_loc=0, xcenter=0.5):

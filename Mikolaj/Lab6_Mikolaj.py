@@ -11,7 +11,6 @@ class BST:
         self.root = TreeNode(self.arr[0])
 
     def insert(self,node,value):
-        print(node.value)
         if node.value:
             if value > node.value:
                 if node.right is None:
@@ -26,10 +25,29 @@ class BST:
         else:
             node.value = value
 
+    def search(self,node,value):
+        if not node:
+            return False
+        else:
+            if node.value == value:
+                return node
+            else:
+                if value > node.value:
+                    if node.right == None:
+                        return 1
+                    else:
+                        return self.search(node.left, value)
+                else:
+                    if node.left == None:
+                        return 1
+                    else:
+                        return self.search(node.left, value)
 
 a=[5,1,8,3,10]
 b=BST(a)
 for el in a[1:]:
     b.insert(b.root,el)
-
-print(b.root.left.value,b.root.right.value)
+b.insert(b.root,4)
+c=b.search(b.root,1)
+print(c)
+#print(b.root.left.value,b.root.right.value)

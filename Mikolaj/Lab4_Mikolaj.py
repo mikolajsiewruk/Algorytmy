@@ -3,7 +3,6 @@ import time as tm
 import matplotlib.pyplot as plt
 
 class Results:
-    # ważne! tak się deklaruje klasy w python, bardzo przydatne, warto umieć! (napisanie jednej klasy zaoszczędziło mi pisania 100 linijek kodu dla tego zadania)
     def __init__(self,time_arr):
         super().__init__()
         self.time_arr=time_arr
@@ -136,7 +135,6 @@ quicksort_time = []
 sizes = [50, 100, 200, 500, 1000, 2000]
 sorter=Sorter()
 
-# 100 krotne powtórzenie sortowań (Metoda Monte Carlo), w instrukcji jest żeby ilość iteracji podawać z klawiatury (nie chce mi sie)
 for i in range(0,100):
     merge_arrays, counting_arrays, quicksort_arrays = generate_vector()
     m_temp = []

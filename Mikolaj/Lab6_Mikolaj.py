@@ -42,7 +42,35 @@ class BST:
                         return 1
                     else:
                         return self.search(node.left, value)
+    def remove(self,node,value): # change
+        if not node:
+            return 1
+        else:
+            if node.value == value:
+                if not node.left and not node.right:
+                    node = None
+                elif not node.left:
+                    a = node.right.value
+                    node.right = None
+                    node = TreeNode(a)
 
+                elif not node.left:
+                    a = node.left.value
+                    node.left = None
+                    node = TreeNode(a)
+                else:
+
+            else:
+                if value > node.value:
+                    if node.right == None:
+                        return 1
+                    else:
+                        return self.search(node.left, value)
+                else:
+                    if node.left == None:
+                        return 1
+                    else:
+                        return self.search(node.left, value)
 a=[5,1,8,3,10]
 b=BST(a)
 for el in a[1:]:

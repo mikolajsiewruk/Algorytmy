@@ -90,9 +90,33 @@ class BST:
                             parent.right = successor.right
                         del successor
                         return node
-    '''def find_parent(self,value):
-        node = self.search(self.root,value)
-        return self.traverse(node)'''
+    def find_min(self,node):
+        if node:
+            if node.left is not None:
+                return self.find_min(node.left)
+            else:
+                return node
+        else:
+            return 1
+
+    def find_max(self,node):
+        if node:
+            if node.right is not None:
+                return self.find_max(node.right)
+            else:
+                return node
+        else:
+            return 1
+    def find_previous(self, value):
+        node = self.search(self.root, value)
+        if node.left:
+            return self.find_max(node.left)
+        else:
+            print('lol idk yet')
+            #smth
+
+
+
 
 
 class AVL(BST):

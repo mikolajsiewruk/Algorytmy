@@ -98,19 +98,10 @@ class Tree:
             else:
                 q.append(current.right)
     def make_tree(self):
-        """
-        Creates a complete Tree from the initialization array.
-        :return:
-        """
         for i in range(1,len(self.arr)):
             self.add_node(self.root,self.arr[i])
 
     def print_tree(self,node):
-        """
-        Prints values of nodes in a Tree in random order.
-        :param node: Root of a Tree
-        :return:
-        """
         if not node:
             return
         self.print_tree(node.left)
@@ -118,9 +109,6 @@ class Tree:
         self.print_tree(node.right)
 
 class MaxHeap:
-    """
-    Max Heap data structure.
-    """
     def __init__(self,arr):
         self.graph=[]
         self.arr=arr
@@ -129,12 +117,6 @@ class MaxHeap:
         self.temp=self.arr
 
     def add_node(self, node, val):
-        """
-        Add a node to the Heap class.
-        :param node: Root node
-        :param val: Value of a node to add
-        :return:
-        """
         q = []
         q.append(node)
         while q:
@@ -156,10 +138,6 @@ class MaxHeap:
                 q.append(current.right)
 
     def make_heap(self):
-        """
-        Creates a complete Heap from the initialization array by choosing max value in every step.
-        :return:
-        """
         temp=self.temp
         for i in range(len(self.temp)):
             m=max(temp)

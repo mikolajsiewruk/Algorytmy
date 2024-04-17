@@ -6,7 +6,6 @@ class TreeNode:
         self. right = None
         self.balance = 0
 
-
 class BST:
     def __init__(self, arr: list):
         self.arr = arr
@@ -15,42 +14,30 @@ class BST:
 
     def make_tree(self):
         for nums in self.arr[1:]:
-            self.insert(self.root, nums)
+            self.insert(self.root,nums)
 
-    def traverse(self, node):
+    def traverse(self,node):
         if node is not None:
             self.traverse(node.left)
             print(node.value)
             self.traverse(node.right)
 
-    def insert(self, node, value):
-        """
-        Insert a node of a given value to BST tree.
-        :param node: root of a tree
-        :param value:
-        :return:
-        """
+    def insert(self,node,value):
         if node.value:
             if value > node.value:
                 if node.right is None:
                     node.right = TreeNode(value)
                 else:
-                    self.insert(node.right, value)
+                    self.insert(node.right,value)
             else:
                 if node.left is None:
                     node.left = TreeNode(value)
                 else:
-                    self.insert(node.left, value)
+                    self.insert(node.left,value)
         else:
             node.value = value
 
-    def search(self, node, value):
-        """
-        Search a node, by giving a value.
-        :param node: root of a tree
-        :param value: value of a node to return
-        :return: node object
-        """
+    def search(self,node,value):
         if not node:
             return False
         else:
@@ -67,6 +54,118 @@ class BST:
                         return 1
                     else:
                         return self.search(node.left, value)
+    def remove(self,node,value):
+        if not node:
+            return 1
+        else:
+            if node.value > value:
+                node.left = self.remove(node.left,value)
+                return node
+            elif node.value < value:
+                node.right = self.remove(node.right,value)
+                return node
+            else:
+                if not node.left and not node.right:
+                    del node
+                elif not node.left:
+                    a = node.right.value
+                    del node.right
+                    node = TreeNode(a)
+                    return node
+
+                elif not node.right:
+                    a = node.left.value
+                    del node.left
+                    node = TreeNode(a)
+                    return node
+                else:
+                    parent = node
+                    successor = node.right
+                    while successor.left is not None:
+                        parent = successor
+                        successor = successor.left
+                        if parent != node:
+                            parent.left = successor.right
+                        else:
+                            parent.right = successor.right
+                        del successor
+                        return node
+    def find_min(self,node):
+        if node:
+            if node.left is not None:
+                return self.find_min(node.left)
+            else:
+                return node
+        else:
+            return 1
+
+    def find_max(self,node):
+        if node:
+            if node.right is not None:
+                return self.find_max(node.right)
+            else:
+                return node
+        else:
+            return 1
+
+    def find_previous(self, value):
+        node = self.search(self.root, value)
+        if node.left:
+            return self.find_max(node.left)
+        else:
+            return "TBC"
+
+    def find_next(self,value):
+        node = self.search(self.root, value)
+        if node.right:
+            return self.find_min(node.right)
+        else:
+            return "TBC"
+
+
+class AVL(BST):
+
+    def check_balance(self,node):
+        if node == None:
+            return 0
+        else:
+            return max(self.check_balance(node.left),self.check_balance(node.right)) + 1
+
+    def rotate_right(self,node):
+        R = node.left
+        node.left = R.right
+        R.right = node
+        node = R
+
+    def rotate_left(self,node):
+        L = node.right
+        node.right = L.left
+        L.left = node
+        node = L
+
+    def balance(self,node):
+        balance_factor = self.check_balance(node.left) - self.check_balance(node.right)
+        while balance_factor not in [-1,0,1]:
+            if balance_factor > 1:
+                self.rotate_right(node)
+            else:
+                self.rotate_left(node)
+            balance_factor = self.check_balance(node.left) - self.check_balance(node.right)
+    def insert(self,node,value):
+        if node.value:
+            if value > node.value:
+                if node.right is None:
+                    node.right = TreeNode(value)
+                else:
+                    self.insert(node.right,value)
+            else:
+                if node.left is None:
+                    node.left = TreeNode(value)
+                else:
+                    self.insert(node.left,value)
+        balance_factor = self.check_balance(node.left) - self.check_balance(node.right)
+        if balance_factor not in [-1,0,1]:
+            self.balance(node)
 
     def remove(self, node, value):
         if not node:
@@ -104,99 +203,9 @@ class BST:
                             parent.right = successor.right
                         del successor
                         return node
-
-    def find_min(self, node):
-        if node:
-            if node.left is not None:
-                return self.find_min(node.left)
-            else:
-                return node
-        else:
-            return 1
-
-    def find_max(self, node):
-        if node:
-            if node.right is not None:
-                return self.find_max(node.right)
-            else:
-                return node
-        else:
-            return 1
-
-    def find_previous(self, value):
-        node = self.search(self.root, value)
-        if node.left:
-            return self.find_max(node.left)
-        else:
-            print('lol idk yet')
-            #smth
-
-
-class AVL(BST):
-
-    def check_balance(self, node):
-        """
-        Count balance factor (max height of left and right subtree)
-        :param node:
-        :return: max height of left and right subtree
-        """
-        if node == None:
-            return 0
-        else:
-            return max(self.check_balance(node.left), self.check_balance(node.right)) + 1
-
-    def rotate_right(self, node):
-        R = node.left
-        node.left = R.right
-        R.right = node
-        node = R
-
-    def rotate_left(self, node):
-        L = node.right
-        node.right = L.left
-        L.left = node
-        node = L
-
-    def balance(self, node):
-        """
-        Check node's balance factor and perform rotations if needed.
-        :param node: node to balance
-        :return:
-        """
-        balance_factor = self.check_balance(node.left) - self.check_balance(node.right)
-        while balance_factor not in [-1, 0, 1]:
-            # print(balance_factor)
-            if balance_factor > 1:
-                # print('left lacking')
-                self.rotate_right(node)
-            else:
-                # print('right')
-                self.rotate_left(node)
-            balance_factor = self.check_balance(node.left) - self.check_balance(node.right)
-            # print(node.value)
-
-    def insert(self, node, value):  # fix to check every node for balance
-        """
-        Insert a node of a given value to AVL tree.
-        :param node: root of a tree
-        :param value:
-        :return:
-        """
-        if node.value:
-            if value > node.value:
-                if node.right is None:
-                    node.right = TreeNode(value)
-                else:
-                    self.insert(node.right,value)
-            else:
-                if node.left is None:
-                    node.left = TreeNode(value)
-                else:
-                    self.insert(node.left,value)
-        balance_factor = self.check_balance(node.left) - self.check_balance(node.right)
-        if balance_factor not in [-1, 0, 1]:
-            self.balance(node)
-
+            balance_factor = self.check_balance(self.root.left) - self.check_balance(self.root.right)
+            if balance_factor not in [-1, 0, 1]:
+                self.balance(self.root)
 
 
 

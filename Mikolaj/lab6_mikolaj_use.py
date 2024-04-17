@@ -32,13 +32,12 @@ for k in range(100):
     for i in range(len(sizes)):
         bst = BST(arr[0][i])
         avl = AVL(arr[1][i])
-        print(avl.check_balance(avl.root.right),avl.check_balance(avl.root.left))
 
         values = []
         time_bst_temp = 0
         time_avl_temp = 0
 
-        for j in range(sizes[i]): # mega ważne!!!! jeśli tutaj da się 100 tak jak jest w instrukcji, wykres avl wygląda jakby nie miał sensu, jednakże ma on właśnie wielki sens tylko trzeba to umieć uzasadnić
+        for j in range(100): # mega ważne!!!! jeśli tutaj da się 100 tak jak jest w instrukcji, wykres avl wygląda jakby nie miał sensu, jednakże ma on właśnie wielki sens tylko trzeba to umieć uzasadnić
             values.append(random.randint(1, sizes[i]))
 
         for val in values:
@@ -62,8 +61,8 @@ stats_avl = Results(time_avl)
 stats_bst = Results(time_bst)
 print(stats_avl.means,stats_bst.means )
 
-plt.plot(sizes,stats_avl.means, label = "AVL")
-plt.plot(sizes,stats_bst.means, label = "BST")
+plt.plot(sizes,stats_avl.means, label = "AVL O(log(n))")
+plt.plot(sizes,stats_bst.means, label = "BST O(n)")
 plt.title("BST and AVL trees search time comparison")
 plt.xlabel("Array size")
 plt.ylabel("Search time")

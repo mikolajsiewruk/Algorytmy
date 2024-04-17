@@ -302,12 +302,18 @@ def to_search(N, vector_sizes):
     for i in range(N):
         for j in range(len(vector_sizes)):
             wector = []
-            while len(wector) < 100:
-                x = rnd.randint(1, vector_sizes[j])
-                if x not in wector:
+            if vector_sizes[j] == 50:
+                while len(wector) < 100:
+                    x = rnd.randint(1, vector_sizes[j])
                     wector.append(x)
+            else:
+                while len(wector) < 100:
+                    x = rnd.randint(1, vector_sizes[j])
+                    if x not in wector:
+                        wector.append(x)
             bst_search[j][i] = wector.copy()
             avl_search[j][i] = wector.copy()
+            wector.clear()
     return bst_search, avl_search
 
 def statistics(N, vector_sizes):
@@ -319,11 +325,11 @@ def statistics(N, vector_sizes):
         czas_bst = 0
         czas_avl = 0
         for j in range(N):
-            bst = BST(bst_arrays[j][i][0])
-            for el in bst_arrays[j][i][1:]:
+            bst = BST(bst_arrays[i][j])
+            for el in bst_arrays[i][j][1:]:
                 bst.insert(bst.root, el)
 
-            for el in bst_search[j][i]:
+            for el in bst_search[i][j]:
                 start = tm.perf_counter_ns()
                 bst.search(bst.root, el)
                 stop = tm.perf_counter_ns()
@@ -331,11 +337,11 @@ def statistics(N, vector_sizes):
 
             del bst
 
-            avl = AVL(avl_arrays[j][i][0])
-            for el in avl_arrays[j][i][1:]:
+            avl = AVL(avl_arrays[i][j])
+            for el in avl_arrays[i][j][1:]:
                 avl.insert(avl.root, el)
 
-            for el in avl_search[j][i]:
+            for el in avl_search[i][j]:
                 start = tm.perf_counter_ns()
                 avl.search(avl.root, el)
                 stop = tm.perf_counter_ns()
@@ -348,7 +354,7 @@ def statistics(N, vector_sizes):
     return times_bst, times_avl
 
 vector_sizes = [50, 100, 500, 1000, 2000]
-times_bst, times_avl = statistics(1, vector_sizes)
+times_bst, times_avl = statistics(100, vector_sizes)
 
 plt.plot(vector_sizes, times_avl, label = "AVL")
 plt.plot(vector_sizes, times_bst, label = "BST")

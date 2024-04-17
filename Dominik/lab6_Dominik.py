@@ -1,5 +1,6 @@
 import random as rnd
 import time as tm
+import copy
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -34,14 +35,31 @@ class BST:
         if node.right:
             return self.minimum(node.right)
         else:
-            return None
+            potential = None
+            current = self.root
+            while current is not node:
+                if node.key < current.key:
+                    potential = current
+                    current = current.left
+                else:
+                    current = current.right
+            return potential
+
 
 # Wyszukiwanie poprzednika
     def previous(self, node):
         if node.left:
             return self.maksimum(node.left)
         else:
-            return None
+            potential = None
+            current = self.root
+            while current != node:
+                if node.key > current.key:
+                    potential = current
+                    current = current.right
+                else:
+                    current = current.left
+            return potential
 
 
 # Wyszukiwanie elementu
@@ -214,137 +232,129 @@ class AVL(BST):
         if balance_factor not in [-1, 0, 1]:
             self.balance(self.root)
 
-# def arrays_creation(N, vector_sizes):
-#     #N is a number of repetitions, vector_sizes is a vector of sizes of vectors to be sorted
-#     x = []
-#     for i in range(len(vector_sizes)):
-#         x.append([])
-#         for j in range(N):
-#             x[i].append([])
-#     bst_arrays = copy.deepcopy(x)
-#     avl_arrays = copy.deepcopy(x)
-#     return bst_arrays, avl_arrays
-#
-# def generate(N, vector_sizes):
-#     bst_arrays, avl_arrays = arrays_creation(N, vector_sizes)
-#     for i in range(N):
-#         for j in range(len(vector_sizes)):
-#             wector = []
-#             while len(wector) < vector_sizes[j]:
-#                 x = rnd.randint(1, vector_sizes[j])
-#                 if x not in wector:
-#                     wector.append(x)
-#             bst_arrays[j][i] = wector.copy()
-#             avl_arrays[j][i] = wector.copy()
-#     return bst_arrays, avl_arrays
-#
-# def to_search():
-#
-#
-# vector_sizes = [15, 50, 100, 500, 1000, 2000]
-# print(generate(10, vector_sizes)[0])
-class Results:
-    def __init__(self, time_arr):
-        super().__init__()
-        self.time_arr = time_arr
-        self.time50 = []
-        self.time100 = []
-        self.time200 = []
-        self.time500 = []
-        self.time1000 = []
-        self.time2000 = []
-        self.mins = []
-        self.maxs = []
-        self.means = []
-        self.separate_arrays()
-        self.get_stats()
 
-    def separate_arrays(self):
-        for i in range(0, len(self.time_arr)):
-            self.time50.append(self.time_arr[i][0])
-            self.time100.append(self.time_arr[i][1])
-            self.time200.append(self.time_arr[i][2])
-            self.time500.append(self.time_arr[i][3])
-            self.time1000.append(self.time_arr[i][4])
-            self.time2000.append(self.time_arr[i][5])
+wector_15 = []
+while len(wector_15) < 15:
+    x = rnd.randint(1, 15)
+    if x not in wector_15:
+        wector_15.append(x)
 
-    # metoda licząca statystyki w każdej z wydzielonych wcześniej tabel
-    def get_stats(self):
-        args = [self.time50, self.time100, self.time200, self.time500, self.time1000, self.time2000]
+BST_15 = BST(wector_15)
+AVL_15 = AVL(wector_15)
+for el in wector_15[1:]:
+    BST_15.insert(BST_15.root, el)
+    AVL_15.insert(AVL_15.root, el)
 
-        # pętla dla każdej z tabel liczy jej statystyki i dodaje do tabeli statycstycznych
-        for arr in args:
-            self.mins.append(min(arr))
-            self.maxs.append(max(arr))
-            self.means.append(sum(arr) / len(arr))
+to_search = []
+while len(to_search) <5:
+    x = rnd.randint(1, 15)
+    if x not in to_search:
+        to_search.append(x)
 
-def generate():
-    sizes = [50, 100, 200, 500, 1000, 2000]  # not the best design
-    bst_arrays = []
-    avl_arrays = []
-    arr = []
-    for j in range(len(sizes)):
-        for i in range(1, sizes[j]+1):
-            arr.append(i)
-        np.random.shuffle(arr)
-        temp = arr.copy()
-        bst_arrays.append(temp)
-        avl_arrays.append(temp)
+czas_BST15 = 0
+czas_AVL15 = 0
+for el in to_search:
+    start = tm.perf_counter_ns()
+    BST_15.search(BST_15.root, el)
+    stop = tm.perf_counter_ns()
+    czas_BST15 = czas_BST15 + (stop - start)
+    start = tm.perf_counter_ns()
+    BST_15.search(BST_15.root, el)
+    stop = tm.perf_counter_ns()
+    czas_AVL15 = czas_AVL15 + (stop - start)
+
+data = {
+    "BST" : [czas_BST15],
+    "AVL" : [czas_AVL15]
+}
+
+df = pd.DataFrame(data, index = ["5 z 15"])
+print(df)
+
+
+def arrays_creation(N, vector_sizes):
+    #N is a number of repetitions, vector_sizes is a vector of sizes of vectors to be sorted
+    x = []
+    for i in range(len(vector_sizes)):
+        x.append([])
+        for j in range(N):
+            x[i].append([])
+    bst_arrays = copy.deepcopy(x)
+    avl_arrays = copy.deepcopy(x)
     return bst_arrays, avl_arrays
 
 
-sizes = [50, 100, 200, 500, 1000, 2000]
-time_bst = []
-time_avl = []
+def generate(N, vector_sizes):
+    bst_arrays, avl_arrays = arrays_creation(N, vector_sizes)
+    for i in range(N):
+        for j in range(len(vector_sizes)):
+            wector = []
+            while len(wector) < vector_sizes[j]:
+                x = rnd.randint(1, vector_sizes[j])
+                if x not in wector:
+                    wector.append(x)
+            bst_arrays[j][i] = wector.copy()
+            avl_arrays[j][i] = wector.copy()
+    return bst_arrays, avl_arrays
 
-for k in range(100):
-    arr = generate()
-    t_bst = []
-    t_avl = []
-    for i in range(len(sizes)):
-        bst = BST(arr[0][i])
-        avl = AVL(arr[1][i])
-        print(avl.check_balance(avl.root.right),avl.check_balance(avl.root.left))
+def to_search(N, vector_sizes):
+    bst_search, avl_search = arrays_creation(N, vector_sizes)
+    for i in range(N):
+        for j in range(len(vector_sizes)):
+            wector = []
+            while len(wector) < 100:
+                x = rnd.randint(1, vector_sizes[j])
+                if x not in wector:
+                    wector.append(x)
+            bst_search[j][i] = wector.copy()
+            avl_search[j][i] = wector.copy()
+    return bst_search, avl_search
 
-        values = []
-        time_bst_temp = 0
-        time_avl_temp = 0
+def statistics(N, vector_sizes):
+    bst_arrays, avl_arrays = generate(N, vector_sizes)
+    bst_search, avl_search = to_search(N, vector_sizes)
+    times_bst = []
+    times_avl = []
+    for i in range(len(vector_sizes)):
+        czas_bst = 0
+        czas_avl = 0
+        for j in range(N):
+            bst = BST(bst_arrays[j][i][0])
+            for el in bst_arrays[j][i][1:]:
+                bst.insert(bst.root, el)
 
-        for j in range(100): # mega ważne!!!! jeśli tutaj da się 100 tak jak jest w instrukcji, wykres avl wygląda jakby nie miał sensu, jednakże ma on właśnie wielki sens tylko trzeba to umieć uzasadnić
-            values.append(rnd.randint(1, sizes[i]))
+            for el in bst_search[j][i]:
+                start = tm.perf_counter_ns()
+                bst.search(bst.root, el)
+                stop = tm.perf_counter_ns()
+                czas_bst = czas_bst + (stop - start)
 
-        for val in values:
-            t1 = tm.perf_counter_ns()
-            bst.search(bst.root,val)
-            t2 = tm.perf_counter_ns()
-            time_bst_temp += t2-t1
+            del bst
 
-            t3 = tm.perf_counter_ns()
-            avl.search(avl.root,val)
-            t4 = tm.perf_counter_ns()
-            time_avl_temp += t4-t3
+            avl = AVL(avl_arrays[j][i][0])
+            for el in avl_arrays[j][i][1:]:
+                avl.insert(avl.root, el)
 
-        t_bst.append(time_bst_temp)
-        t_avl.append(time_avl_temp)
-    time_bst.append(t_bst)
-    time_avl.append(t_avl)
+            for el in avl_search[j][i]:
+                start = tm.perf_counter_ns()
+                avl.search(avl.root, el)
+                stop = tm.perf_counter_ns()
+                czas_avl = czas_avl + (stop - start)
 
-stats_avl = Results(time_avl)
-stats_bst = Results(time_bst)
-print(stats_avl.means,stats_bst.means )
+            del avl
 
-plt.plot(sizes,stats_avl.means, label = "AVL")
-plt.plot(sizes,stats_bst.means, label = "BST")
+        times_bst.append(czas_bst/N)
+        times_avl.append(czas_avl/N)
+    return times_bst, times_avl
+
+vector_sizes = [50, 100, 500, 1000, 2000]
+times_bst, times_avl = statistics(1, vector_sizes)
+
+plt.plot(vector_sizes, times_avl, label = "AVL")
+plt.plot(vector_sizes, times_bst, label = "BST")
 plt.title("BST and AVL trees search time comparison")
 plt.xlabel("Array size")
 plt.ylabel("Search time")
 plt.grid()
 plt.legend()
 plt.show()
-# data = {
-#     "BST" : [czas_BST15],
-#     "AVL" : [czas_AVL15]
-# }
-#
-# df = pd.DataFrame(data, index = ["5 z 15"])
-# print(df)

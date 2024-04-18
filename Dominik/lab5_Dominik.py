@@ -123,14 +123,14 @@ class MaxHeap:
             current = q[0]
             q.pop(0)
             if not current.left:
-                print(f"{current.val}  added {val} left")
+                #print(f"{current.val}  added {val} left")
                 current.left = TreeNode(val)
                 self.graph.append((f'{current.val}',f'{current.left.val}'))
                 break
             else:
                 q.append(current.left)
             if not current.right:
-                print(f"{current.val}  added {val} right")
+                #print(f"{current.val}  added {val} right")
                 current.right = TreeNode(val)
                 self.graph.append((f'{current.val}',f'{current.right.val}'))
                 break
@@ -146,7 +146,7 @@ class MaxHeap:
         return self.graph
 
 h=MaxHeap(wektor)
-print(h.make_heap())
+#print(h.make_heap())
 
 
 def heapify(arr, N, i):  # N to wielkość tablicy, i to indeks elementu który sprawdzamy
@@ -277,7 +277,7 @@ def sorting(N, vector_sizes):
             x = heapsort(h_arrays[j][i])
             stop = tm.perf_counter_ns()
             czas = stop - start
-            print(x)
+            #print(x)
             h_times[j][i] = czas
 
             start = tm.perf_counter_ns()

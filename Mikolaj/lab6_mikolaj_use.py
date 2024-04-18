@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def generate():
-    sizes = [50, 100, 200, 500, 1000, 2000]  # not the best design
+    sizes = [50, 100, 200, 500, 1000, 2000]
     bst_arrays = []
     avl_arrays = []
     arr = []
@@ -37,7 +37,7 @@ for k in range(100):
         time_bst_temp = 0
         time_avl_temp = 0
 
-        for j in range(100): # mega ważne!!!! jeśli tutaj da się 100 tak jak jest w instrukcji, wykres avl wygląda jakby nie miał sensu, jednakże ma on właśnie wielki sens tylko trzeba to umieć uzasadnić
+        for j in range(100):
             values.append(random.randint(1, sizes[i]))
 
         for val in values:

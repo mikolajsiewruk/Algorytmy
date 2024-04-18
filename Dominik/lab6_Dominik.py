@@ -231,7 +231,35 @@ class AVL(BST):
         if balance_factor not in [-1, 0, 1]:
             self.balance(self.root)
 
+wector_15 = []
+while len(wector_15) < 15:
+    x = rnd.randint(1, 15)
+    if x not in wector_15:
+        wector_15.append(x)
 
+BST_15 = BST(wector_15)
+AVL_15 = AVL(wector_15)
+for el in wector_15[1:]:
+    BST_15.insert(BST_15.root, el)
+    AVL_15.insert(AVL_15.root, el)
+
+to_search = []
+while len(to_search) <5:
+    x = rnd.randint(1, 15)
+    if x not in to_search:
+        to_search.append(x)
+
+czas_BST15 = 0
+czas_AVL15 = 0
+for el in to_search:
+    start = tm.perf_counter_ns()
+    BST_15.search(BST_15.root, el)
+    stop = tm.perf_counter_ns()
+    czas_BST15 = czas_BST15 + (stop - start)
+    start = tm.perf_counter_ns()
+    BST_15.search(BST_15.root, el)
+    stop = tm.perf_counter_ns()
+    czas_AVL15 = czas_AVL15 + (stop - start)
 
 
 def arrays_creation(N, vector_sizes):
@@ -315,46 +343,18 @@ def statistics(N, vector_sizes):
         times_avl.append(czas_avl/N)
     return times_bst, times_avl
 
-wector_15 = []
-while len(wector_15) < 15:
-    x = rnd.randint(1, 15)
-    if x not in wector_15:
-        wector_15.append(x)
-
-BST_15 = BST(wector_15)
-AVL_15 = AVL(wector_15)
-for el in wector_15[1:]:
-    BST_15.insert(BST_15.root, el)
-    AVL_15.insert(AVL_15.root, el)
-
-to_search = []
-while len(to_search) <5:
-    x = rnd.randint(1, 15)
-    if x not in to_search:
-        to_search.append(x)
-
-czas_BST15 = 0
-czas_AVL15 = 0
-for el in to_search:
-    start = tm.perf_counter_ns()
-    BST_15.search(BST_15.root, el)
-    stop = tm.perf_counter_ns()
-    czas_BST15 = czas_BST15 + (stop - start)
-    start = tm.perf_counter_ns()
-    BST_15.search(BST_15.root, el)
-    stop = tm.perf_counter_ns()
-    czas_AVL15 = czas_AVL15 + (stop - start)
-
-data = {
-    "BST" : [czas_BST15],
-    "AVL" : [czas_AVL15]
-}
-
-df = pd.DataFrame(data, index = ["5 z 15"])
-print(df)
 
 vector_sizes = [50, 100, 500, 1000, 2000]
 times_bst, times_avl = statistics(100, vector_sizes)
+
+
+data = {
+    "BST" : [czas_BST15, times_bst[0], times_bst[1], times_bst[2], times_bst[3], times_bst[4]],
+    "AVL" : [czas_AVL15, times_avl[0], times_avl[1], times_avl[2], times_avl[3], times_avl[4]]
+}
+
+df = pd.DataFrame(data, index = ["5 z 15", "100 z 50", "100 ze 100", "100 z 500", "100 z 1000", "100 z 2000"])
+print(df)
 
 plt.plot(vector_sizes, times_avl, label = "AVL")
 plt.plot(vector_sizes, times_bst, label = "BST")

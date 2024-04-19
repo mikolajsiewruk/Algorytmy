@@ -61,6 +61,8 @@ stats_avl = Results(time_avl)
 stats_bst = Results(time_bst)
 print(stats_avl.means,stats_bst.means )
 
+
+# jak widać drzewo AVL jest zdecydowanie szybsze w najgorszych przypadkach niż BST, jednak jest też cięższe do implementacji
 plt.plot(sizes,stats_avl.means, label = "AVL O(log(n))")
 plt.plot(sizes,stats_bst.means, label = "BST O(n)")
 plt.title("BST and AVL trees search time comparison")

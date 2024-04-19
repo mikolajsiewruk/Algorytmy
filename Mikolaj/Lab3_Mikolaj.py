@@ -41,7 +41,7 @@ class Results:
             self.means.append(sum(arr)/len(arr))
 
 # w celu sprawdzenia czy sortowania działają należy zrobić coś takiego print(bubble_sort(jakas_tablica)[1]), gdyż funkcje sortujące zwracają wynik w takiej postaci (czas,posortowana_tablica), wtedy posortowana tablica znajduje się pod indeksem 1, taka typ danych nazywa się tuple
-def bubble_sort(arr):
+'''def bubble_sort(arr):
     start = tm.perf_counter_ns()
     a = 1
     while a != 0:
@@ -152,4 +152,4 @@ plt.ylabel("Sorting time")
 plt.legend()
 plt.grid(True)
 
-plt.show()
+plt.show()'''

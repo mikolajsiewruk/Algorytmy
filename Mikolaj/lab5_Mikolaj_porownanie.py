@@ -1,42 +1,8 @@
 import random
-import time as tm
 import matplotlib.pyplot as plt
+import time as tm
 
-class Results:
-    def __init__(self,time_arr):
-        super().__init__()
-        self.time_arr=time_arr
-        self.time50 = []
-        self.time100 = []
-        self.time200 = []
-        self.time500 = []
-        self.time1000 = []
-        self.time2000 = []
-        self.mins=[]
-        self.maxs=[]
-        self.means=[]
-        self.separate_arrays()
-        self.get_stats()
 
-    # metoda separate arrays służąca do wydobycia danych o czasie sortowania tablicy o określonym rozmiarze, ważne jest,żeby przy inicjalizacji klasy podac wektor wektorów (funkcja generate vectors)
-    def separate_arrays(self):
-        for i in range(0,len(self.time_arr)):
-            self.time50.append(self.time_arr[i][0])
-            self.time100.append(self.time_arr[i][1])
-            self.time200.append(self.time_arr[i][2])
-            self.time500.append(self.time_arr[i][3])
-            self.time1000.append(self.time_arr[i][4])
-            self.time2000.append(self.time_arr[i][5])
-
-    # metoda licząca statystyki w każdej z wydzielonych wcześniej tabel
-    def get_stats(self):
-        args=[self.time50,self.time100,self.time200,self.time500,self.time1000,self.time2000]
-
-        # pętla dla każdej z tabel liczy jej statystyki i dodaje do tabeli statycstycznych
-        for arr in args:
-            self.mins.append(min(arr))
-            self.maxs.append(max(arr))
-            self.means.append(sum(arr)/len(arr))
 class Sorter:
     def __init__(self):
         self.merge_sorted=[]
@@ -111,6 +77,79 @@ class Sorter:
             b = self.quicksort(right)
             arr = a + pvs + b
         return arr
+
+    # heapify sprawdza czy dany node spełnia warunki sortowania
+    def heapify(self,arr, N, i): # N to wielkość tablicy, i to indeks elementu który sprawdzamy
+        largest = i  # Initialize largest as root
+        l = 2 * i + 1  # left child = 2*i + 1
+        r = 2 * i + 2  # right child = 2*i + 2
+
+        # See if left child of root exists and is
+        # greater than root
+        if l < N and arr[largest] < arr[l]:
+            largest = l
+
+        # See if right child of root exists and is
+        # greater than root
+        if r < N and arr[largest] < arr[r]:
+            largest = r
+
+        # jeśli jakiś child jest większy od roota trzeba go zmienić
+        if largest != i:
+            arr[i], arr[largest] = arr[largest], arr[i]  # swap
+
+            self.heapify(arr, N, largest)
+
+    def heapsort(self,arr):
+        N = len(arr)
+
+        # Build a maxheap. od końca tablicy
+        for i in range(N // 2 - 1, -1, -1):
+            self.heapify(arr, N, i)
+
+        # One by one extract elements
+        for i in range(N - 1, 0, -1): # od tyłu zamieniaj elementy
+            arr[i], arr[0] = arr[0], arr[i]  # swap
+            self.heapify(arr, i, 0)
+        return arr
+
+class Results:
+    def __init__(self,time_arr):
+        super().__init__()
+        self.time_arr=time_arr
+        self.time50 = []
+        self.time100 = []
+        self.time200 = []
+        self.time500 = []
+        self.time1000 = []
+        self.time2000 = []
+        self.mins=[]
+        self.maxs=[]
+        self.means=[]
+        self.separate_arrays()
+        self.get_stats()
+
+    # metoda separate arrays służąca do wydobycia danych o czasie sortowania tablicy o określonym rozmiarze, ważne jest,żeby przy inicjalizacji klasy podac wektor wektorów (funkcja generate vectors)
+    def separate_arrays(self):
+        for i in range(0,len(self.time_arr)):
+            self.time50.append(self.time_arr[i][0])
+            self.time100.append(self.time_arr[i][1])
+            self.time200.append(self.time_arr[i][2])
+            self.time500.append(self.time_arr[i][3])
+            self.time1000.append(self.time_arr[i][4])
+            self.time2000.append(self.time_arr[i][5])
+
+    # metoda licząca statystyki w każdej z wydzielonych wcześniej tabel
+    def get_stats(self):
+        args=[self.time50,self.time100,self.time200,self.time500,self.time1000,self.time2000]
+
+        # pętla dla każdej z tabel liczy jej statystyki i dodaje do tabeli statycstycznych
+        for arr in args:
+            self.mins.append(min(arr))
+            self.maxs.append(max(arr))
+            self.means.append(sum(arr)/len(arr))
+
+
 def generate_vector()-> tuple:
     '''
     Generates random vectors with sizes given below
@@ -121,25 +160,29 @@ def generate_vector()-> tuple:
     merge_arrays = []
     counting_arrays = []
     quicksort_arrays = []
+    heapsort_arrays=[]
     for i in range(0, len(sizes)):
         temporary = [random.randint(0, 5000) for _ in range(0, sizes[i])]
         merge_arrays.append(temporary.copy())
         counting_arrays.append(temporary.copy())
         quicksort_arrays.append(temporary.copy())
-    return merge_arrays,counting_arrays,quicksort_arrays
+        heapsort_arrays.append(temporary.copy())
+    return merge_arrays,counting_arrays,quicksort_arrays,heapsort_arrays
 
 merge_time = []
 counting_time = []
 quicksort_time = []
+heapsort_time = []
 
 sizes = [50, 100, 200, 500, 1000, 2000]
 sorter=Sorter()
 
 for i in range(0,100):
-    merge_arrays, counting_arrays, quicksort_arrays = generate_vector()
+    merge_arrays, counting_arrays, quicksort_arrays, heapsort_arrays = generate_vector()
     m_temp = []
     c_temp = []
     q_temp = []
+    h_temp = []
     for j in range(6):
         m_start=tm.perf_counter_ns()
         sorter.merge_sort(merge_arrays[j])
@@ -155,18 +198,27 @@ for i in range(0,100):
         sorter.quicksort(quicksort_arrays[j])
         q_end = tm.perf_counter_ns()
         q_temp.append(q_end - q_start)
+
+
+        h_start = tm.perf_counter_ns()
+        sorter.heapsort(heapsort_arrays[j])
+        h_end = tm.perf_counter_ns()
+        h_temp.append(h_end-h_start)
     merge_time.append(m_temp)
     counting_time.append(c_temp)
     quicksort_time.append(q_temp)
+    heapsort_time.append(h_temp)
 
 merge=Results(merge_time)
 counting=Results(counting_time)
 quick=Results(quicksort_time)
+heap=Results(heapsort_time)
 
 plt.figure(1)
 plt.plot(sizes,merge.means,label="Merge sort mean")
 plt.plot(sizes,counting.means,label="Counting sort mean")
 plt.plot(sizes,quick.means,label="Quicksort mean")
+plt.plot(sizes,heap.means, label="Heapsort mean")
 plt.title("Mean sorting time for sorting algorithms")
 plt.xlabel("Array size")
 plt.ylabel("Sorting time")
@@ -198,6 +250,16 @@ plt.scatter(sizes,quick.mins,label="mins",s=10)
 plt.scatter(sizes,quick.maxs,label="maxs",s=10)
 plt.scatter(sizes,quick.means,label="means",s=10)
 plt.title("Quicksort statistics for different array sizes")
+plt.xlabel("Array size")
+plt.ylabel("Sorting time")
+plt.legend()
+plt.grid(True)
+
+plt.figure(5)
+plt.scatter(sizes,heap.mins,label="mins",s=10)
+plt.scatter(sizes,heap.maxs,label="maxs",s=10)
+plt.scatter(sizes,heap.means,label="means",s=10)
+plt.title("Merge sort statistics for different array sizes")
 plt.xlabel("Array size")
 plt.ylabel("Sorting time")
 plt.legend()

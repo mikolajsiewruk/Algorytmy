@@ -1,4 +1,4 @@
-
+from tabulate import tabulate
 
 class HuffmanTreeNode:
     def __init__(self,value,letter):
@@ -112,6 +112,67 @@ class Compressor:
             else:
                 return self.decode(node.right,code)
 
+
+    def counting(self, text: str, letter: str):
+        unique_characters = []
+        dictionary = {}
+        for letters in text:
+            if letters not in unique_characters:
+                unique_characters.append(letters)
+        for letters in unique_characters:
+            dictionary[letters] = text.count(letters)
+        for key in dictionary.keys():
+            if letter == key:
+                return dictionary.get(key)
+        return print("Nie ma takiej litery")
+
+    def bits(self, node: HuffmanTreeNode, text: str):
+        bits_original = len(text) * 8
+        bits_Huffman = 0
+        unique_characters = []
+        for letters in text:
+            if letters not in unique_characters:
+                unique_characters.append(letters)
+        for character in unique_characters:
+            code = self.encode(node, character, "")
+            bits_Huffman += len(code)
+
+        return bits_original, bits_Huffman
+
+    def as_instruction_wants_wtf(self, node: HuffmanTreeNode, text:str):
+        unique_characters = []
+        tab = []
+        for letters in text:
+            if letters not in unique_characters:
+                unique_characters.append(letters)
+        for character in unique_characters:
+            amount = self.counting(text, character)
+            code = self.encode(node, character, "")
+            tab.append([character, amount, code])
+
+        return print(tabulate(tab))
+
+    def encode_text(self, node, text):
+        binary_text = ""
+        for letter in text:
+            code = self.encode(node, letter, "")
+            code = "".join(code)
+            binary_text += code
+        return binary_text
+
+    def decode_text(self, node, text):
+        original_text = ""
+        end = 0
+        while len(text) > 0:
+            character = text[0:end]
+            encoded = self.decode(node, character)
+            if len(encoded) == 1:
+                original_text += encoded
+                text = text[end:]
+                end = 0
+            else:
+                end = end + 1
+        return original_text
 '''st = 'Ala ma kota.'
 file = open("l7.txt",mode = "r")'''
 '''for lines in file:

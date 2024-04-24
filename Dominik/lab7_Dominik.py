@@ -85,7 +85,7 @@ class Compressor:
 
     def encode(self, node: HuffmanTreeNode, letter: str, code: str) -> str:
         """
-        Returns letter code in Huffman Compression Tree. Initialize with code = [].
+        Returns letter code in Huffman Compression Tree. Initialize with code = "".
         """
         if node:
             if letter == node.letter:
@@ -173,11 +173,9 @@ class Compressor:
         return original_text
 
 
-
-
 s = open("test.txt", "r")
 s = s.read()
-print(len(s))
+# print(len(s))
 
 c = Compressor()
 

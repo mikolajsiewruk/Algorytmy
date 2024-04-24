@@ -83,34 +83,32 @@ class Compressor:
 
         return items[0][2]  # zwraca root tego drzewa
 
-    def encode(self, node: HuffmanTreeNode, letter: str, code: list) -> list:
+    def encode(self, node: HuffmanTreeNode, letter: str, code: str) -> str:
         """
-        Returns letter code in Huffman Compression Tree. Initialize with code = [].
+        Returns letter code in Huffman Compression Tree. Initialize with code = "".
         """
         if node:
             if letter == node.letter:
                 return code
             if letter in node.left.letter:
-                code.append(0)
+                code += "0"
                 return self.encode(node.left, letter, code)
             else:
-                code.append(1)
+                code += "1"
                 return self.encode(node.right, letter, code)
         else:
             return code
 
-    def decode(self,node: HuffmanTreeNode,code: list) -> str:
+    def decode(self,node: HuffmanTreeNode,code: str) -> str:
         """
         Returns a letter represented by the given Huffman letter code.
         """
-        if not code:
+        if len(code) == 0:
             return node.letter
-        for i in code:
-            code.pop(code.index(i))
-            if i == 0:
-                return self.decode(node.left,code)
-            else:
-                return self.decode(node.right,code)
+        if code[0] == '0':
+            return self.decode(node.left, code[1:])
+        else:
+            return self.decode(node.right, code[1:])
 
 
     def counting(self, text: str, letter: str):
@@ -134,12 +132,12 @@ class Compressor:
             if letters not in unique_characters:
                 unique_characters.append(letters)
         for character in unique_characters:
-            code = self.encode(node, character, [])
+            code = self.encode(node, character, "")
             bits_Huffman += len(code)
 
         return bits_original, bits_Huffman
 
-    def as_instruction_wants(self, node: HuffmanTreeNode, text: str):
+    def as_instruction_wants_wtf(self, node: HuffmanTreeNode, text:str):
         unique_characters = []
         tab = []
         for letters in text:
@@ -147,16 +145,16 @@ class Compressor:
                 unique_characters.append(letters)
         for character in unique_characters:
             amount = self.counting(text, character)
-            code = self.encode(node, character, [])
+            code = self.encode(node, character, "")
             tab.append([character, amount, code])
 
         return print(tabulate(tab))
 
     def encode_text(self, node, text):
-        binary_text = []
+        binary_text = ""
         for letter in text:
-            code = self.encode(node, letter, [])
-            code.append(code)
+            code = self.encode(node, letter, "")
+            code = "".join(code)
             binary_text += code
         return binary_text
 
@@ -175,95 +173,19 @@ class Compressor:
         return original_text
 
 
-s = open("l7.txt", "r")
+s = open("test.txt", "r")
 s = s.read()
+# print(len(s))
+
 c = Compressor()
 
-# text is a root node of a Huffman compression tree
-text = c.huffman_compression(s)
-
-print(c.encode(text,'L',[]))
-print(c.decode(text,[0,1,1,0]))
+l = c.huffman_compression(s)
+# print(l)
+print(c.encode(l,'L',""))
+print(c.decode(l,'0110'))
 print(c.counting(s, "a"))
-
-print('Ilość bitów przed kompresją: ' + str(c.bits(text, s)[0]) + " i po kompresji: " + str(c.bits(text, s)[1]))
-enc = c.encode_text(text, s)
+print('Ilość bitów przed kompresją: ' + str(c.bits(l, s)[0]) + " i po kompresji: " + str(c.bits(l, s)[1]))
+enc = c.encode_text(l, s)
 print(enc)
-c.as_instruction_wants(text, s)
-print(c.decode_text(text, enc))
-'''st = 'Ala ma kota.'
-file = open("l7.txt",mode = "r")'''
-'''for lines in file:
-    st+=lines
-    for chars in lines:
-        unique_characters.add(chars)'''
-'''unique_characters = []
-dictionary = {}
-for lett in st:
-    if lett not in unique_characters:
-        unique_characters.append(lett)
-for letters in unique_characters:
-    dictionary[letters] = st.count(letters)
-print(unique_characters)
-print(dictionary)
-dictionary_desc = dict(sorted(dictionary.items(), key=lambda item: -item[1]))
-
-print(dictionary_desc)
-items = []
-i = dictionary_desc.items()
-for item in i:
-    items.append([item[0],item[1]])
-
-def keys(item):
-    return item[1]
-items.sort(key = keys, reverse=True)
-print(items)
-
-while len(items)>1:
-    print(items)
-    i1 = items[-1]
-    i2 = items[-2]
-    if len(i1) == 2 and len(i2) == 2:
-        root = HuffmanTreeNode(i1[1]+i2[1],i1[0]+i2[0])
-        root.left = HuffmanTreeNode(i1[1],i1[0])
-        root.right = HuffmanTreeNode(i2[1],i2[0])
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0]+i2[0]
-        val = i1[1]+i2[1]
-        items.append([t,val,root])
-        items.sort(key=keys, reverse=True)
-    elif len(i1) == 2 and len(i2) != 2:
-        root = HuffmanTreeNode(i1[1]+i2[1],i1[0]+i2[0])
-        root.left = HuffmanTreeNode(i1[1],i1[0])
-        root.right = i2[2]
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0] + i2[0]
-        val = i1[1] + i2[1]
-        items.append([t, val, root])
-        items.sort(key=keys, reverse=True)
-    elif len(i1) != 2 and len(i2) == 2:
-        root = HuffmanTreeNode(i1[1] + i2[1], i1[0] + i2[0])
-        root.left = i1[2]
-        root.right = HuffmanTreeNode(i2[1], i2[0])
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0] + i2[0]
-        val = i1[1] + i2[1]
-        items.append([t, val, root])
-        items.sort(key=keys, reverse=True)
-    else:
-        root = HuffmanTreeNode(i1[1] + i2[1], i1[0] + i2[0])
-        root.left = i1[2]
-        root.right = i2[2]
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0] + i2[0]
-        val = i1[1] + i2[1]
-        items.append([t, val, root])
-        items.sort(key=keys, reverse=True)
-
-a = items[0][2]
-print(a.decode(a,'m',[]))
-print(a.left.right.right.left.letter)'''
+c.as_instruction_wants_wtf(l, s)
+print(c.decode_text(l, enc))

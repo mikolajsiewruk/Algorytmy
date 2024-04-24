@@ -134,12 +134,12 @@ class Compressor:
             if letters not in unique_characters:
                 unique_characters.append(letters)
         for character in unique_characters:
-            code = self.encode(node, character, "")
+            code = self.encode(node, character, [])
             bits_Huffman += len(code)
 
         return bits_original, bits_Huffman
 
-    def as_instruction_wants_wtf(self, node: HuffmanTreeNode, text:str):
+    def as_instruction_wants(self, node: HuffmanTreeNode, text: str):
         unique_characters = []
         tab = []
         for letters in text:
@@ -147,16 +147,16 @@ class Compressor:
                 unique_characters.append(letters)
         for character in unique_characters:
             amount = self.counting(text, character)
-            code = self.encode(node, character, "")
+            code = self.encode(node, character, [])
             tab.append([character, amount, code])
 
         return print(tabulate(tab))
 
     def encode_text(self, node, text):
-        binary_text = ""
+        binary_text = []
         for letter in text:
-            code = self.encode(node, letter, "")
-            code = "".join(code)
+            code = self.encode(node, letter, [])
+            code.append(code)
             binary_text += code
         return binary_text
 
@@ -173,6 +173,24 @@ class Compressor:
             else:
                 end = end + 1
         return original_text
+
+
+s = open("l7.txt", "r")
+s = s.read()
+c = Compressor()
+
+# text is a root node of a Huffman compression tree
+text = c.huffman_compression(s)
+
+print(c.encode(text,'L',[]))
+print(c.decode(text,[0,1,1,0]))
+print(c.counting(s, "a"))
+
+print('Ilość bitów przed kompresją: ' + str(c.bits(text, s)[0]) + " i po kompresji: " + str(c.bits(text, s)[1]))
+enc = c.encode_text(text, s)
+print(enc)
+c.as_instruction_wants(text, s)
+print(c.decode_text(text, enc))
 '''st = 'Ala ma kota.'
 file = open("l7.txt",mode = "r")'''
 '''for lines in file:

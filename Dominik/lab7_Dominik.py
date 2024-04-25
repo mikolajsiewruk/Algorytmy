@@ -248,6 +248,12 @@ stop = tm.perf_counter_ns()
 timedec25 = stop - start
 times_dec = [timedec1, timedec5, timedec10, timedec25]
 
+coefficiant1 = bitsd1/bitso1 * 100
+coefficiant5 = bitsd5/bitso5 * 100
+coefficiant10 = bitsd10/bitso10 * 100
+coefficiant25 = bitsd25/bitso25 * 100
+coefficiants = [coefficiant1, coefficiant5, coefficiant10, coefficiant25]
+
 
 plt.figure(1)
 plt.plot(characters, bitso, label = "Bits before compression")
@@ -266,5 +272,14 @@ plt.ylabel("Czas [ns]")
 plt.title("Zależność czasu od ilości znaków")
 plt.legend()
 plt.grid(True)
+
+plt.figure(3)
+plt.plot(characters, coefficiants, label = "Level of compression")
+plt.xlabel("Długość tekstu")
+plt.ylabel("Poziom kompresji")
+plt.title("Zależność długości tekstu od poziomu kompresji")
+plt.legend()
+plt.grid(True)
+
 plt.show()
 

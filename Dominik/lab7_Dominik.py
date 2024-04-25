@@ -1,4 +1,6 @@
 from tabulate import tabulate
+import matplotlib.pyplot as plt
+import time as tm
 
 class HuffmanTreeNode:
     def __init__(self,value,letter):
@@ -173,19 +175,96 @@ class Compressor:
         return original_text
 
 
-s = open("test.txt", "r")
-s = s.read()
-# print(len(s))
-
 c = Compressor()
 
-l = c.huffman_compression(s)
+wers1 = open("1wers.txt", "r")
+wers1 = wers1.read()
+w1 = c.huffman_compression(wers1)
+wers5 = open("5wers.txt", "r")
+wers5 = wers5.read()
+w5 = c.huffman_compression(wers5)
+wers10 = open("10wers.txt", "r")
+wers10 = wers10.read()
+w10 = c.huffman_compression(wers10)
+wers25 = open("test.txt", "r")
+wers25 = wers25.read()
+w25 = c.huffman_compression(wers25)
+# print(len(s))
+
 # print(l)
-print(c.encode(l,'L',""))
-print(c.decode(l,'0110'))
-print(c.counting(s, "a"))
-print('Ilość bitów przed kompresją: ' + str(c.bits(l, s)[0]) + " i po kompresji: " + str(c.bits(l, s)[1]))
-enc = c.encode_text(l, s)
-print(enc)
-c.as_instruction_wants_wtf(l, s)
-print(c.decode_text(l, enc))
+print("Literka L w kodzie binarnym: " + c.encode(w25, 'L', ""))
+print("Kod 0110 jako literka: " + c.decode(w25, '0110'))
+print("Ilość wystąpień literki 'a' w tekście: ", c.counting(wers25, "a"))
+print('Ilość bitów przed kompresją: ' + str(c.bits(w25, wers25)[0]) + " i po kompresji: " + str(c.bits(w25, wers25)[1]))
+c.as_instruction_wants_wtf(w25, wers25)
+enc = c.encode_text(w25, wers25)
+print("Teskt binarny: " + enc)
+print("Tekst zdekodowany: \n" + c.decode_text(w25, enc))
+
+
+bitso1, bitsd1 = c.bits(w1, wers1)
+bitso5, bitsd5 = c.bits(w5, wers5)
+bitso10, bitsd10 = c.bits(w10, wers10)
+bitso25, bitsd25 = c.bits(w25, wers25)
+bitso = [bitso1, bitso5, bitso10, bitso25]
+bitsd = [bitsd1, bitsd5, bitsd10, bitsd25]
+# print(bitso)
+# print(bitsd)
+characters = [len(wers1), len(wers5), len(wers10), len(wers25)]
+
+start = tm.perf_counter_ns()
+enc1 = c.encode_text(w1, wers1)
+stop = tm.perf_counter_ns()
+timeenc1 = stop - start
+start = tm.perf_counter_ns()
+enc5 = c.encode_text(w5, wers5)
+stop = tm.perf_counter_ns()
+timeenc5 = stop - start
+start = tm.perf_counter_ns()
+enc10 = c.encode_text(w10, wers10)
+stop = tm.perf_counter_ns()
+timeenc10 = stop - start
+start = tm.perf_counter_ns()
+enc25 = c.encode_text(w25, wers25)
+stop = tm.perf_counter_ns()
+timeenc25 = stop - start
+times_enc = [timeenc1, timeenc5, timeenc10, timeenc25]
+
+start = tm.perf_counter_ns()
+dec1 = c.decode_text(w1, enc1)
+stop = tm.perf_counter_ns()
+timedec1 = stop - start
+start = tm.perf_counter_ns()
+dec5 = c.decode_text(w5, enc5)
+stop = tm.perf_counter_ns()
+timedec5 = stop - start
+start = tm.perf_counter_ns()
+dec10 = c.decode_text(w10, enc10)
+stop = tm.perf_counter_ns()
+timedec10 = stop - start
+start = tm.perf_counter_ns()
+dec25 = c.decode_text(w25, enc25)
+stop = tm.perf_counter_ns()
+timedec25 = stop - start
+times_dec = [timedec1, timedec5, timedec10, timedec25]
+
+
+plt.figure(1)
+plt.plot(characters, bitso, label = "Bits before compression")
+plt.plot(characters, bitsd,  label="Bits after compression")
+plt.xlabel("Długość tekstu")
+plt.ylabel("Ilość bitów")
+plt.title("Zależność ilości bitów od ilości znaków")
+plt.legend()
+plt.grid(True)
+
+plt.figure(2)
+plt.plot(characters, times_enc, label = "Time for compression")
+plt.plot(characters, times_dec, label = "Time for decompression")
+plt.xlabel("Długość tekstu")
+plt.ylabel("Czas [ns]")
+plt.title("Zależność czasu od ilości znaków")
+plt.legend()
+plt.grid(True)
+plt.show()
+

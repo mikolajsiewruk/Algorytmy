@@ -199,7 +199,7 @@ print('Ilość bitów przed kompresją: ' + str(c.bits(text, s)[0]) + " i po kom
 enc = c.encode_text(text, s)
 print(enc)
 c.as_instruction_wants(text, s)
-print(c.decode_text(text, enc))
+#print(c.decode_text(text, enc))
 '''st = 'Ala ma kota.'
 file = open("l7.txt",mode = "r")'''
 '''for lines in file:

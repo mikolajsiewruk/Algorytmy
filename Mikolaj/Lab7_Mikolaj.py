@@ -114,6 +114,9 @@ class Compressor:
 
 
     def counting(self, text: str, letter: str):
+        """
+        Counts a given letter in a given string.
+        """
         unique_characters = []
         dictionary = {}
         for letters in text:
@@ -124,9 +127,12 @@ class Compressor:
         for key in dictionary.keys():
             if letter == key:
                 return dictionary.get(key)
-        return print("Nie ma takiej litery")
+        return 1
 
     def bits(self, node: HuffmanTreeNode, text: str):
+        """
+        Returns the number of bits used by a given text.
+        """
         bits_original = len(text) * 8
         bits_Huffman = 0
         unique_characters = []
@@ -140,6 +146,9 @@ class Compressor:
         return bits_original, bits_Huffman
 
     def as_instruction_wants(self, node: HuffmanTreeNode, text: str):
+        """
+        Creates a table.
+        """
         unique_characters = []
         tab = []
         for letters in text:
@@ -150,9 +159,9 @@ class Compressor:
             code = self.encode(node, character, [])
             tab.append([character, amount, code])
 
-        return print(tabulate(tab))
+        print(tabulate(tab))
 
-    def encode_text(self, node, text):
+    def encode_text(self, node: HuffmanTreeNode, text: str):
         binary_text = []
         for letter in text:
             code = self.encode(node, letter, [])
@@ -160,7 +169,7 @@ class Compressor:
             binary_text += code
         return binary_text
 
-    def decode_text(self, node, text):
+    def decode_text(self, node: HuffmanTreeNode, text: list):
         original_text = ""
         end = 0
         while len(text) > 0:

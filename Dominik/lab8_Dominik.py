@@ -8,6 +8,7 @@ def clear_board():
             board[i][j] = ""
     global current_player
     current_player = "O"
+    label.config(text="Current player is: " + current_player)
 
 
 # Function offering players to play again

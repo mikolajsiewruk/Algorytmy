@@ -35,10 +35,10 @@ def check_win(player):
                 print(player, "wins")
                 messagebox.showinfo("Game Over", player + " wins")
                 play_again()
-            elif j < 6 and i < 6 and all(board[j + x][i+x] == player for x in range(5)):
+            elif j < 6 and i < 6 and all(board[j+x][i+x] == player for x in range(5)):
                 messagebox.showinfo("Game Over", player + " wins")
                 play_again()
-            elif j < 6 and i > 5 and all(board[j + x][i-x] == player for x in range(5)):
+            elif j < 6 and i > 3 and all(board[j+x][i-x] == player for x in range(5)):
                 messagebox.showinfo("Game Over", player + " wins")
                 play_again()
             elif counter == 100:

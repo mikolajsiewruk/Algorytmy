@@ -37,15 +37,15 @@ def button_click(row,col):
             current_player.clear()
             current_player.append('X')
         board[row][col] = current_player[-1]
+        print(board)
         draw_board()
     if check_win(current_player[-1],row,col):
         messagebox.showinfo("result",f"{current_player[-1]} won")
-        root.destroy()
-        os.startfile("Lab8_Mikolaj.py")
+        clear_board()
+        draw_board()
     if draw_board():
-        messagebox.showinfo("result", 'draw')
-        root.destroy()
-        os.startfile("Lab8_Mikolaj.py")
+        clear_board()
+        draw_board()
 
 def draw_board():
     finished = True
@@ -56,19 +56,59 @@ def draw_board():
             if buttons[i][j]['text'] == '':
                 finished = False
     return finished
+
+def clear_board():
+    for i in range(10):
+        for j in range(10):
+            board[i][j] = ""
+    current_player.append("O")
 def check_win(player,x,y):
     win = False
-    col=row=diag=rdiag=0
-
-    for i in range(5):
-        if buttons[x][i]["text"] ==player:
-            col+=1
-        if buttons[i][y]['text'] == player:
-            row+=1
-        if buttons[i][i]['text'] == player:
+    col=row=diag=rdiag=1
+    col_b=row_b=diag_b=rgiag_b=0
+    print(player)
+    print(x,y)
+    k=1
+    while x+k <10 and y+k <10:
+        while buttons[x+k][y+k]['text'] == player:
+            diag += 1
+            k+=1
+        break
+    while x-k>-1 and y-k>-1:
+        while buttons[x-k][y-k]['text'] == player:
             diag+=1
-        if buttons[i][5-i+1]['text'] == player:
+            k+=1
+        break
+    while x+k<10 and y-k>-1:
+        while buttons[x+k][y-k]['text'] == player:
             rdiag+=1
+            k+=1
+        break
+    while x-k>-1 and y+k<10:
+        while buttons[x-k][y+k]['text'] == player:
+            rdiag+=1
+            k+=1
+        break
+    while y+k <10:
+        while buttons[x][y+k]["text"] ==player:
+            k+=1
+            row+=1
+        break
+    while y-k>-1:
+        while buttons[x][y-k]["text"] ==player:
+            row+=1
+            k+=1
+        break
+    while x+k<10:
+        while buttons[x+k][y]['text'] == player:
+            col+=1
+            k+=1
+        break
+    while x-k>-1:
+        while buttons[x - k][y]['text'] == player:
+            col+=1
+            k+=1
+        break
     if col == 5 or row == 5 or diag == 5 or rdiag==5:
         win = True
     print(col,row,diag,rdiag)

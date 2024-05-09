@@ -3,90 +3,90 @@ import heapq
 from collections import Counter, defaultdict
 import time
 import matplotlib.pyplot as plt
-class Węzeł:
-    def __init__(self, symbol=None, częstość=None):
+class Wezel:
+    def __init__(self, symbol=None, czestosc=None):
         self.symbol = symbol
-        self.częstość = częstość
+        self.czestosc = czestosc
         self.lewe = None
         self.prawe = None
     def __lt__(self, other):
-        return self.częstość < other.częstość
-def zlicz_częstość(tekst):
+        return self.czestosc < other.czestosc
+def zlicz_czestosc(tekst):
     return Counter(tekst)
-def zbuduj_drzewo_huffmana(mapa_częstości):
-    kolejka_priorytetowa = [Węzeł(symbol, częstość) for symbol, częstość in mapa_częstości.items()]
+def zbuduj_drzewo_huffmana(mapa_czestosci):
+    kolejka_priorytetowa = [Wezel(symbol, czestosc) for symbol, czestosc in mapa_czestosci.items()]
     heapq.heapify(kolejka_priorytetowa)
     while len(kolejka_priorytetowa) > 1:
         lewe = heapq.heappop(kolejka_priorytetowa)
         prawe = heapq.heappop(kolejka_priorytetowa)
-        połączony = Węzeł(częstość=lewe.częstość + prawe.częstość)
-        połączony.lewe = lewe
-        połączony.prawe = prawe
-        heapq.heappush(kolejka_priorytetowa, połączony)
+        polaczony = Wezel(czestosc=lewe.czestosc + prawe.czestosc)
+        polaczony.lewe = lewe
+        polaczony.prawe = prawe
+        heapq.heappush(kolejka_priorytetowa, polaczony)
     return kolejka_priorytetowa[0]
 
 
-def generuj_kody_huffmana(węzeł, kod='', mapa_kodów=None):
-    if mapa_kodów is None:
-        mapa_kodów = {}
-    if węzeł.symbol is not None:
-        mapa_kodów[węzeł.symbol] = kod
+def generuj_kody_huffmana(wezel, kod='', mapa_kodow=None):
+    if mapa_kodow is None:
+        mapa_kodow = {}
+    if wezel.symbol is not None:
+        mapa_kodow[wezel.symbol] = kod
     else:
-        generuj_kody_huffmana(węzeł.lewe, kod + '0', mapa_kodów)
-        generuj_kody_huffmana(węzeł.prawe, kod + '1', mapa_kodów)
-    return mapa_kodów
+        generuj_kody_huffmana(wezel.lewe, kod + '0', mapa_kodow)
+        generuj_kody_huffmana(wezel.prawe, kod + '1', mapa_kodow)
+    return mapa_kodow
 
 
-def zakoduj(tekst, mapa_kodów):
+def zakoduj(tekst, mapa_kodow):
     zakodowany_tekst = ''
     for znak in tekst:
-        zakodowany_tekst += mapa_kodów[znak]
+        zakodowany_tekst += mapa_kodow[znak]
     return zakodowany_tekst
 
 
 def odkoduj(zakodowany_tekst, drzewo_huffmana):
     odkodowany_tekst = ''
-    aktualny_węzeł = drzewo_huffmana
+    aktualny_wezel = drzewo_huffmana
     for bit in zakodowany_tekst:
         if bit == '0':
-            aktualny_węzeł = aktualny_węzeł.lewe
+            aktualny_wezel = aktualny_wezel.lewe
         else:
-            aktualny_węzeł = aktualny_węzeł.prawe
+            aktualny_wezel = aktualny_wezel.prawe
 
-        if aktualny_węzeł.symbol is not None:
-            odkodowany_tekst += aktualny_węzeł.symbol
-            aktualny_węzeł = drzewo_huffmana
+        if aktualny_wezel.symbol is not None:
+            odkodowany_tekst += aktualny_wezel.symbol
+            aktualny_wezel = drzewo_huffmana
     return odkodowany_tekst
 
 
-def wygeneruj_tabelę(mapa_kodów, mapa_częstości):
+def wygeneruj_tabele(mapa_kodow, mapa_czestosci):
     tabela = [["Symbol", "Liczność", "Kod Huffmana"]]
-    for symbol, częstość in mapa_częstości.items():
-        kod = mapa_kodów[symbol]
-        tabela.append([symbol, częstość, kod])
+    for symbol, czestosc in mapa_czestosci.items():
+        kod = mapa_kodow[symbol]
+        tabela.append([symbol, czestosc, kod])
     return tabela
 
 
 if __name__ == "__main__":
     tekst = "Lorem ipsum dolor sit amet."
 
-    # Zliczanie częstości symboli
-    mapa_częstości = zlicz_częstość(tekst)
+    # Zliczanie czestosci symboli
+    mapa_czestosci = zlicz_czestosc(tekst)
 
     # Budowanie drzewa Huffmana
-    drzewo_huffmana = zbuduj_drzewo_huffmana(mapa_częstości)
+    drzewo_huffmana = zbuduj_drzewo_huffmana(mapa_czestosci)
 
     # Generowanie kodów Huffmana
-    mapa_kodów = generuj_kody_huffmana(drzewo_huffmana)
+    mapa_kodow = generuj_kody_huffmana(drzewo_huffmana)
 
     # Kompresja tekstu
-    zakodowany_tekst = zakoduj(tekst, mapa_kodów)
+    zakodowany_tekst = zakoduj(tekst, mapa_kodow)
 
     # Dekompresja tekstu
     odkodowany_tekst = odkoduj(zakodowany_tekst, drzewo_huffmana)
 
     # Wygenerowanie tabeli
-    tabela = wygeneruj_tabelę(mapa_kodów, mapa_częstości)
+    tabela = wygeneruj_tabele(mapa_kodow, mapa_czestosci)
 
     # Wyświetlenie tabeli
     print(tabulate(tabela, headers="firstrow", tablefmt="grid"))
@@ -116,10 +116,10 @@ if __name__ == "__main__":
             print(f"\nIlość znaków przed kompresją ({n} wersów): {len(tekst)}")
 
             # Kompresja tekstu
-            mapa_częstości = zlicz_częstość(tekst)
-            drzewo_huffmana = zbuduj_drzewo_huffmana(mapa_częstości)
-            mapa_kodów = generuj_kody_huffmana(drzewo_huffmana)
-            zakodowany_tekst = zakoduj(tekst, mapa_kodów)
+            mapa_czestosci = zlicz_czestosc(tekst)
+            drzewo_huffmana = zbuduj_drzewo_huffmana(mapa_czestosci)
+            mapa_kodow = generuj_kody_huffmana(drzewo_huffmana)
+            zakodowany_tekst = zakoduj(tekst, mapa_kodow)
 
             # Wyświetlenie ilości bitów po kompresji
             print(f"Ilość bitów po kompresji ({n} wersów): {len(zakodowany_tekst)}")
@@ -148,10 +148,10 @@ for n in liczba_wersow:
     liczba_znakow_przed_kompresja.append(len(tekst))
 
     start_kompresji = time.time()
-    mapa_częstości = zlicz_częstość(tekst)
-    drzewo_huffmana = zbuduj_drzewo_huffmana(mapa_częstości)
-    mapa_kodów = generuj_kody_huffmana(drzewo_huffmana)
-    zakodowany_tekst = zakoduj(tekst, mapa_kodów)
+    mapa_czestosci = zlicz_czestosc(tekst)
+    drzewo_huffmana = zbuduj_drzewo_huffmana(mapa_czestosci)
+    mapa_kodow = generuj_kody_huffmana(drzewo_huffmana)
+    zakodowany_tekst = zakoduj(tekst, mapa_kodow)
     end_kompresji = time.time()
 
     # Zliczanie liczby bitów po kompresji

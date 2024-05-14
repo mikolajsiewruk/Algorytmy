@@ -5,13 +5,13 @@ current_player=['O','X']
 root = Tk()
 root.title("Tic tac toe")
 
-root.config(background="Light Green")
+root.config(background="Blue")
 
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-window_height = 400
-window_width = 500
+window_height = 690
+window_width = 770
 
 center_x = int(screen_width/2 - window_width/2)
 center_y = int(screen_height/2 - window_height/2)
@@ -111,7 +111,6 @@ def check_win(player,x,y):
         break
     if col == 5 or row == 5 or diag == 5 or rdiag==5:
         win = True
-    print(col,row,diag,rdiag)
     return win
 
 root.mainloop()

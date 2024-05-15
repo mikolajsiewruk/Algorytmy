@@ -80,6 +80,9 @@ class ShipPlacementGUI:
         self.col = 0
         self.ship_positions = set()
 
+        self.w1_buttons = []
+        self.w2_buttons = []
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -146,6 +149,36 @@ class ShipPlacementGUI:
             self.col = 1
             self.row = 0
 
+    def check_guess_hit_p1(self,player,row,col):
+        if player.ships[row][col] == 'x':
+            player.ships[row][col] = 0
+            if self.check_win(player):
+                messagebox.showinfo("Win","Player 2 won")
+            self.w1_buttons[row][col]["text"] = 'X'
+            messagebox.showinfo("Hit",f"Hit at {row,col}")
+            return True
+        messagebox.showinfo("Hit",f"Miss {row,col}")
+        return False
+    def check_guess_hit_p2(self,player,row,col):
+        if player.ships[row][col] == 'x':
+            player.ships[row][col] = 0
+            if self.check_win(player):
+                messagebox.showinfo("Win","Player 2 won")
+            self.w2_buttons[row][col]["text"] = 'X'
+            messagebox.showinfo("Hit",f"Hit at {row,col}")
+            return True
+        messagebox.showinfo("Hit",f"Miss {row,col}")
+        return False
+
+    def check_win(self,player):
+        ship_count = 0
+        for i in range(len(player.ships)):
+            ship_count+= player.ships[i].count('x')
+        if ship_count == 0:
+            return True
+        else:
+            return False
+
     def confirm_ship_placement(self):
         if self.current_player == self.player1:
             self.current_player = self.player2
@@ -162,15 +195,14 @@ class ShipPlacementGUI:
             w1_board_frame = tk.Frame(w1)
             w1_board_frame.pack()
 
-            w1_buttons = []
             for row in range(self.board_size):
                 button_row = []
                 for col in range(self.board_size):
                     button = tk.Button(w1_board_frame, width=2, height=1,
-                                       command=lambda r=row, c=col: self.draw_board(r, c))
+                                       command=lambda r=row, c=col: self.check_guess_hit_p1(self.player2,r,c))
                     button.grid(row=row, column=col)
                     button_row.append(button)
-                w1_buttons.append(button_row)
+                self.w1_buttons.append(button_row)
 
             w2_top_frame = tk.Frame(w2)
             w2_top_frame.pack()
@@ -178,15 +210,14 @@ class ShipPlacementGUI:
             w2_board_frame = tk.Frame(w2)
             w2_board_frame.pack()
 
-            w2_buttons = []
             for row in range(self.board_size):
                 button_row = []
                 for col in range(self.board_size):
                     button = tk.Button(w2_board_frame, width=2, height=1,
-                                       command=lambda r=row, c=col: self.draw_board(r, c))
+                                       command=lambda r=row, c=col: self.check_guess_hit_p2(self.player1,r,c))
                     button.grid(row=row, column=col)
                     button_row.append(button)
-                w2_buttons.append(button_row)
+                self.w2_buttons.append(button_row)
 
 
         self.reset_board()

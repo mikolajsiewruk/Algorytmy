@@ -34,7 +34,7 @@ class Compressor:
         for item in i:  # dodanie itemów w słowniku do listy (łatwiejsza modyfikacja później) (w zasadzie można pominąć w ogóle tworzenie słownika ale już niech działa tak jak jest)
             items.append([item[0], item[1]])
 
-        items.sort(key=lambda item:item[1], reverse=True)  # sortowanie listy wg ilości wystąpień, można to zrobić niby lambdą, ale idk czemu lambda dawała mi różne wyniki, tzn lista była posortowana dobrze wg wartości, ale litery o tych samych ilościach były różnie ustawiane, przez co drzewo robiło się inaczej i kody były różne, stąd została funkcja pomocnicza, możesz przetestowac lambdę
+        items.sort(key=lambda item:item[1], reverse=True)  # sortowanie listy wg ilości wystąpień, można to zrobić niby lambdą, ale idk czemu lambda dawała mi różne wyniki, tzn lista była posortowana dobrze wg wartości, ale litery o tych samych ilościach były różnie ustawiane, przez co drzewo robiło się inaczej i kody były różne, stąd została funkcja pomocnicza
 
         while len(items) > 1:  # algorytm kompresji Huffmana
             # mój pomysł na to był taki, jeśli dwa ostatnie itemy w liście to pojedyncze litery, stworzyć dla nich Nody i dodać do listy item np. ['ab', 2(suma liczby wystapien), Powstały node]
@@ -196,83 +196,8 @@ print(c.decode(text,[0,1,1,0]))
 print(c.counting(s, "a"))
 
 print('Ilość bitów przed kompresją: ' + str(c.bits(text, s)[0]) + " i po kompresji: " + str(c.bits(text, s)[1]))
+print("współczynnik kompresji:",(c.bits(text, s)[1]/c.bits(text, s)[0])*100)
 enc = c.encode_text(text, s)
 print(enc)
 c.as_instruction_wants(text, s)
 #print(c.decode_text(text, enc))
-'''st = 'Ala ma kota.'
-file = open("l7.txt",mode = "r")'''
-'''for lines in file:
-    st+=lines
-    for chars in lines:
-        unique_characters.add(chars)'''
-'''unique_characters = []
-dictionary = {}
-for lett in st:
-    if lett not in unique_characters:
-        unique_characters.append(lett)
-for letters in unique_characters:
-    dictionary[letters] = st.count(letters)
-print(unique_characters)
-print(dictionary)
-dictionary_desc = dict(sorted(dictionary.items(), key=lambda item: -item[1]))
-
-print(dictionary_desc)
-items = []
-i = dictionary_desc.items()
-for item in i:
-    items.append([item[0],item[1]])
-
-def keys(item):
-    return item[1]
-items.sort(key = keys, reverse=True)
-print(items)
-
-while len(items)>1:
-    print(items)
-    i1 = items[-1]
-    i2 = items[-2]
-    if len(i1) == 2 and len(i2) == 2:
-        root = HuffmanTreeNode(i1[1]+i2[1],i1[0]+i2[0])
-        root.left = HuffmanTreeNode(i1[1],i1[0])
-        root.right = HuffmanTreeNode(i2[1],i2[0])
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0]+i2[0]
-        val = i1[1]+i2[1]
-        items.append([t,val,root])
-        items.sort(key=keys, reverse=True)
-    elif len(i1) == 2 and len(i2) != 2:
-        root = HuffmanTreeNode(i1[1]+i2[1],i1[0]+i2[0])
-        root.left = HuffmanTreeNode(i1[1],i1[0])
-        root.right = i2[2]
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0] + i2[0]
-        val = i1[1] + i2[1]
-        items.append([t, val, root])
-        items.sort(key=keys, reverse=True)
-    elif len(i1) != 2 and len(i2) == 2:
-        root = HuffmanTreeNode(i1[1] + i2[1], i1[0] + i2[0])
-        root.left = i1[2]
-        root.right = HuffmanTreeNode(i2[1], i2[0])
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0] + i2[0]
-        val = i1[1] + i2[1]
-        items.append([t, val, root])
-        items.sort(key=keys, reverse=True)
-    else:
-        root = HuffmanTreeNode(i1[1] + i2[1], i1[0] + i2[0])
-        root.left = i1[2]
-        root.right = i2[2]
-        items.pop(items.index(i1))
-        items.pop(items.index(i2))
-        t = i1[0] + i2[0]
-        val = i1[1] + i2[1]
-        items.append([t, val, root])
-        items.sort(key=keys, reverse=True)
-
-a = items[0][2]
-print(a.decode(a,'m',[]))
-print(a.left.right.right.left.letter)'''

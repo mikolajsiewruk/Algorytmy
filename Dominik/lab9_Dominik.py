@@ -86,7 +86,7 @@ def is_correct(row, col):
                     board[row][col] = "O"
                 draw_board(row, col)
                 return True
-            # Taking in all for directions
+            # Taking in all four directions
             elif (row == old_row + 2 or row == old_row - 2) and (col == old_col + 2 or col == old_col - 2):
                 mean_row = int((row + old_row) / 2)
                 mean_col = int((col + old_col) / 2)
@@ -114,7 +114,7 @@ def is_correct(row, col):
                     board[row][col] = "O"
                 draw_board(row, col)
                 return True
-            # Taking in all for directions
+            # Taking in all four directions
             elif (row == old_row + 2 or row == old_row - 2) and (col == old_col + 2 or col == old_col - 2):
                 mean_row = int((row + old_row) / 2)
                 mean_col = int((col + old_col) / 2)

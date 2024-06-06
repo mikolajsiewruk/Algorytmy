@@ -141,7 +141,7 @@ men_preferences = {
 
 women_preferences = {
     'X': ['B', 'A', 'C'],
-    'Y': ['A', 'B', 'C'],
+    'Y': ['A', 'C', 'B'],
     'Z': ['A', 'B', 'C']
 }
 

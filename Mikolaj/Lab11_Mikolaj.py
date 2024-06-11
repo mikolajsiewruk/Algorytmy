@@ -1,113 +1,116 @@
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-class Graph:
-    def __init__(self):
-        self.adj_list = {}
+from Lab_10_1_Mikolaj import Graph
 
-    def add_edge(self, u, v):
+class DiGraph(Graph):
+    def __init__(self):
+        self.adj_list1 = {}
+        self.adj_list ={}
+        self.stack = []
+        self.edges = []
+    def display_graph(self):
+        G = nx.DiGraph()
+        for u in self.adj_list:
+            for nodes in self.adj_list[u]:
+                G.add_edge(u,nodes[0],weight=nodes[1])
+        elarge = [(u, v) for (u, v, d) in G.edges(data=True)]
+        pos = nx.spring_layout(G,seed = 7)
+        plt.figure()
+        nx.draw_networkx_nodes(G, pos, node_size=400)
+        nx.draw_networkx_edges(G, pos, edgelist=elarge, width=3)
+        nx.draw_networkx_labels(G, pos, font_size=20, font_family="sans-serif")
+        edge_labels = nx.get_edge_attributes(G, "weight")
+        nx.draw_networkx_edge_labels(G, pos, edge_labels)
+        plt.show()
+
+    def add_edge(self, u, v,weight):
         if u not in self.adj_list:
             self.adj_list[u] = []
+            self.adj_list1[u] = []
         if v not in self.adj_list:
             self.adj_list[v] = []
-        self.adj_list[u].append(v)
+            self.adj_list1[v] = []
+        self.adj_list[u].append((v,weight))
+        self.edges.append((u,v,weight))
+        self.adj_list1[u].append(v)
+    def dfs(self,v, visited, stack):
+        visited.add(v)
+        print('s',stack)
+        print('v',visited)
+        print(self.adj_list1[v])
+        for neighbour in self.adj_list1[v]:
+            print('n',neighbour)
+            if neighbour not in visited:
+                print('yes')
+                self.dfs(neighbour, visited, stack)
 
-    def remove_edge(self, u, v):
-        if u in self.adj_list and v in self.adj_list[u]:
-            self.adj_list[u].remove(v)
-        if v in self.adj_list and u in self.adj_list[v]:
-            self.adj_list[v].remove(u)
+            else:
+                print('no')
+        print('val', v)
+        stack.append(v)
 
-    def display_edges(self):
-        edges = []
-        for u in self.adj_list:
-            for v in self.adj_list[u]:
-                if (v, u) not in edges:
-                    edges.append((u, v))
-        return edges
+        return stack
 
     def adjacency_matrix(self):
         nodes = list(self.adj_list.keys())
         size = len(nodes)
         index_map = {nodes[i]: i for i in range(size)}
-        adj_matrix = [[0]*10 for _ in range(len(self.adj_list))]
+        adj_matrix = [[0]*len(self.adj_list) for _ in range(len(self.adj_list))]
         for u in self.adj_list:
             for v in self.adj_list[u]:
-                adj_matrix[u][v] = 1
-                adj_matrix[v][u] = 1
+                adj_matrix[u][v[0]] = v[1]
         return adj_matrix
+    def korosaju(self):
+        print('xd',self.adj_list1)
+        def reverse_graph(graph):
+            reversed = DiGraph()
+            for u,v,weight in graph:
+                reversed.add_edge(v,u,weight)
+            return reversed
 
-    def incidence_matrix(self):
-        nodes = list(self.adj_list.keys())
-        edges = self.display_edges()
-        size = len(nodes)
-        num_edges = len(edges)
-        index_map = {nodes[i]: i for i in range(size)}
-        inc_matrix = np.zeros((size, num_edges), dtype=int)
-        for edge_index, (u, v) in enumerate(edges):
-            inc_matrix[index_map[u]][edge_index] = 1
-            inc_matrix[index_map[v]][edge_index] = -1
-        return inc_matrix
-
-    def dfs(self, node, visited=None):
-        if visited is None:
-            visited = set()
-        visited.add(node)
-        result = [node]
-        for neighbor in self.adj_list[node]:
-            if neighbor not in visited:
-                result.extend(self.dfs(neighbor, visited))
-        return result
-
-    def bfs(self, start_node):
+        ssc = []
         visited = set()
-        queue = [start_node]
-        result = []
-
-        while queue:
-            node = queue.pop(0)
+        nodes = [edge[0] for edge in self.edges]
+        for node in nodes:
             if node not in visited:
-                visited.add(node)
-                result.append(node)
-                queue.extend(self.adj_list[node])
+                self.dfs(node,set(),self.stack)
+                print('stack',node,self.stack)
+                rev = reverse_graph(self.edges)
+                unvisited = [edge[0] for edge in self.edges]
+                print(self.stack)
+                while self.stack:
+                    node = self.stack.pop()
+                    if node not in visited:
+                        ssc.append(rev.dfs(node,visited,[]))
 
-        return result
+        return ssc
 
-    def display_graph(self):
-        G = nx.Graph()
-        for u in self.adj_list:
-            for v in self.adj_list[u]:
-                G.add_edge(u, v)
 
-        pos = nx.spring_layout(G)
-        plt.figure()
-        nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=500, edge_color='gray')
-        plt.show()
-edges = [(0, 1), (0, 2), (1, 3), (3, 4), (2, 5), (6, 7), (3, 5), (4, 5), (5, 6), (5, 7), (6, 8), (7, 8), (8, 9)]
-graph = Graph()
 
-for u, v in edges:
-    graph.add_edge(u, v)
 
-# Wyświetlanie krawędzi grafu
-print("Krawędzie grafu:", graph.display_edges())
+graph = DiGraph()
+edges = [
+    (0, 1, 8),
+    (1, 2, 6),
+    (2, 0, 7),
+    (1, 3, 5),
+    (4, 5, 2),
+    (5, 4, 2),
+    (6, 7, 3),
+    (7, 8, 4),
+    (8, 6, 2),
+    (2, 4, 2),
+    (5, 6, 3),
+    (3, 7, 4),
+]
 
-# Wyświetlanie macierzy sąsiedztwa
-print("Macierz sąsiedztwa:")
-print(a:=graph.adjacency_matrix())
+for u, v, weight in edges:
+    graph.add_edge(u, v, weight)
+
 print(graph.adj_list)
-
-# Wyświetlanie macierzy incydencji
-print("Macierz incydencji:")
-print(graph.incidence_matrix())
-
-# Przeszukiwanie w głąb (DFS) za pomocą rekurencji
-print("DFS od wierzchołka 0:", graph.dfs(0))
-
-# Przeszukiwanie wszerz (BFS)
-print("BFS od wierzchołka 0:", graph.bfs(0))
-
 graph.display_graph()
+print(graph.korosaju())
+
 
 def dijkstra(graph: list, start: int, end: int) -> tuple:
     """
@@ -141,7 +144,8 @@ def dijkstra(graph: list, start: int, end: int) -> tuple:
     reachable = [x for x in graph if x.count(0) < len(graph)]  # temporary fix
     visited = []
     for j in range(len(graph)):
-        unvisited.add(j)
+        if graph[j].count(0) != 0:
+            unvisited.add(j)
     distances = []
     for i in range(len(graph)):
         if i == start:
@@ -180,6 +184,9 @@ def dijkstra(graph: list, start: int, end: int) -> tuple:
                 current = nodes["node"]
     path = reconstruct(distances, start, end)
     length = distances[end]["val"][1]
-    return path, length
+    return path, length,distances
 
-print(dijkstra(list(a),1,2))
+a = graph.adjacency_matrix()
+print(a)
+
+print(dijkstra(a,0,7))

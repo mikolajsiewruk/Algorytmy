@@ -189,4 +189,4 @@ def dijkstra(graph: list, start: int, end: int) -> tuple:
 a = graph.adjacency_matrix()
 print(a)
 
-print(dijkstra(a,0,7))
+print(dijkstra(a,8,7))

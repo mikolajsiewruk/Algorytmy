@@ -76,8 +76,6 @@ class Graph:
             G = nx.Graph()  # Not directed graph
         for v in self.matrix:
             for neighbor, weight in self.matrix[v]:
-                print(v, neighbor)
-                print(weight)
                 G.add_edge(chr(v+65), chr(neighbor+65), weight=weight)
         pos = nx.spring_layout(G)
         nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=700, font_size=15, font_weight='bold')

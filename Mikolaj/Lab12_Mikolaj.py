@@ -18,7 +18,6 @@ class Graph:
             nodes = rnd.choices(available,[1 for _ in range(len(available))], k = con_number)
             while nodes:
                 node = rnd.choice(nodes)
-                con = (node,rnd.randint(1,50))
                 val = rnd.randint(1,50)
                 if self.adjacency_matrix[i][node] == 0:
                     self.adjacency_matrix[i][node] = val
